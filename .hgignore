@@ -1,0 +1,7 @@
+syntax: glob
+
+# Sphinx docs
+doctrees/*
+
+syntax: regexp
+.*~
