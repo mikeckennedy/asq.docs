@@ -1,0 +1,385 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Differences from LINQ &mdash; asq v1.0 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="asq v1.0 documentation" href="index.html" />
+    <link rel="next" title="Frequently Asked Questions" href="faq.html" />
+    <link rel="prev" title="asq.extension" href="reference/extension.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="faq.html" title="Frequently Asked Questions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="reference/extension.html" title="asq.extension"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">asq v1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="differences-from-linq">
+<h1>Differences from LINQ<a class="headerlink" href="#differences-from-linq" title="Permalink to this headline">¶</a></h1>
+<p>Although <tt class="docutils literal"><span class="pre">asq</span></tt> is inspired by LINQ, there are inevitably some differences
+with Microsoft&#8217;s LINQ on .NET in order to accommodate the variance between C#
+and Python.</p>
+<div class="section" id="embedded-domain-specific-language">
+<h2>Embedded Domain Specific Language<a class="headerlink" href="#embedded-domain-specific-language" title="Permalink to this headline">¶</a></h2>
+<p>C# and VB.NET have specific syntax extensions to support the creation of LINQ
+queries. This provides an alternative to the fluent interface (method
+chaining).  Any LINQ query can be expressed using the fluent interface. This is
+not true for the LINQ domain specific languages embedded in C# and VB.NET but
+they provide syntactic sugar for many common queries structures.</p>
+<p>For example the following LINQ comprehension expression in C#:</p>
+<div class="highlight-c#"><div class="highlight"><pre><span class="n">from</span> <span class="n">item</span> <span class="k">in</span> <span class="n">collection</span> <span class="n">where</span> <span class="n">item</span><span class="p">.</span><span class="n">id</span> <span class="p">==</span> <span class="m">3</span> <span class="n">select</span> <span class="n">item</span>
+</pre></div>
+</div>
+<p>is equivalent to the following call without syntactic sugar in C#:</p>
+<div class="highlight-c#"><div class="highlight"><pre><span class="n">collection</span><span class="p">.</span><span class="n">Where</span><span class="p">(</span><span class="n">item</span> <span class="p">=&gt;</span> <span class="n">item</span><span class="p">.</span><span class="n">id</span> <span class="p">==</span> <span class="m">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>No language extensions are provided by <tt class="docutils literal"><span class="pre">asq</span></tt>; however, the fluent
+interface is fully supported.</p>
+</div>
+<div class="section" id="let-bindings">
+<h2><tt class="docutils literal"><span class="pre">let</span></tt> bindings<a class="headerlink" href="#let-bindings" title="Permalink to this headline">¶</a></h2>
+<p>LINQ query syntax includes a <tt class="docutils literal"><span class="pre">let</span></tt> keyword which has no direct equivalent in
+the LINQ fluent (method chaining) interface.  The <tt class="docutils literal"><span class="pre">let</span></tt> keyword introduces a
+new identifier which can store intermediate query results for improvements in
+readability or performance.</p>
+<p>All queries in LINQ syntax are translated by the C# compiler into chained
+method calls. The <tt class="docutils literal"><span class="pre">let</span></tt> keyword is translated into a <tt class="docutils literal"><span class="pre">select()</span></tt> mapping
+which creates instances of anonymous types which bundle together the current
+query value together with any addition values bound by <tt class="docutils literal"><span class="pre">let</span></tt> so they may all
+be passed down the method chain. Selectors and predicates in the method chain
+following the <tt class="docutils literal"><span class="pre">select()</span></tt> are modified to extract the correct members from the
+anonymous type.</p>
+<p>For example, the following LINQ query expression:</p>
+<div class="highlight-python"><pre>var names = new string[] { "Dog", "Cat", "Giraffe", "Monkey", "Tortoise" };
+var result =
+    from animalName in names
+    let nameLength = animalName.Length
+    where nameLength &gt; 3
+    orderby nameLength
+    select animalName;</pre>
+</div>
+<p>is equivalent to the C# method chain:</p>
+<div class="highlight-c#"><div class="highlight"><pre><span class="n">var</span> <span class="n">result</span> <span class="p">=</span> <span class="n">names</span>
+    <span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">animalName</span> <span class="p">=&gt;</span> <span class="k">new</span> <span class="p">{</span> <span class="n">nameLength</span> <span class="p">=</span> <span class="n">animalName</span><span class="p">.</span><span class="n">Length</span><span class="p">,</span> <span class="n">animalName</span><span class="p">})</span>
+    <span class="p">.</span><span class="n">Where</span><span class="p">(</span><span class="n">x</span><span class="p">=&gt;</span><span class="n">x</span><span class="p">.</span><span class="n">nameLength</span> <span class="p">&gt;</span> <span class="m">3</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">OrderBy</span><span class="p">(</span><span class="n">x</span><span class="p">=&gt;</span><span class="n">x</span><span class="p">.</span><span class="n">nameLength</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">x</span><span class="p">=&gt;</span><span class="n">x</span><span class="p">.</span><span class="n">animalName</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The latter form can be emulated in <tt class="docutils literal"><span class="pre">asq</span></tt> using a <tt class="docutils literal"><span class="pre">Record</span></tt> object which can
+be concisely created by the <tt class="docutils literal"><span class="pre">new()</span></tt> factory function:</p>
+<div class="highlight-python"><pre>from asq.initiators import asq
+from asq.record import new
+
+names = ['Dog', 'Cat', 'Giraffe', 'Monkey', 'Tortoise']
+result = query(names)
+    .select(lambda animal_name: new(name_length=len(animal_name),
+                                    animal_name=animal_name))
+    .where(lambda x: x.name_length &gt; 3)
+    .order_by(lambda x: x.name_length)
+    .select(lambda x: x.animal_name)</pre>
+</div>
+</div>
+<div class="section" id="extension-methods">
+<h2>Extension methods<a class="headerlink" href="#extension-methods" title="Permalink to this headline">¶</a></h2>
+<p>C# supports extension methods which allow LINQ to &#8220;add&#8221; methods to existing
+types such as <tt class="docutils literal"><span class="pre">IEnumerable</span></tt>. This is how the LINQ query operators are added
+to enumerable types.  Python has no fully equivalent technique because so-
+called monkey patching, whereby new methods can be added to existing classes,
+cannot be applied to built-in types such as list because they are immutable by
+design.</p>
+<p>For this reason query initiators such <tt class="docutils literal"><span class="pre">query()</span></tt> must be used to convert a
+Python iterable into a type which supports query operators.</p>
+<p>Nonetheless, the core operators included in <tt class="docutils literal"><span class="pre">asq</span></tt> may be supplemented with
+additional operators by adding new methods to the appropriate queryable type,
+usually <tt class="docutils literal"><span class="pre">Queryable</span></tt> itself.</p>
+<p>A decorator called <tt class="docutils literal"><span class="pre">&#64;extend</span></tt> is provided by <tt class="docutils literal"><span class="pre">asq</span></tt> for this purpose.</p>
+</div>
+<div class="section" id="overloading">
+<h2>Overloading<a class="headerlink" href="#overloading" title="Permalink to this headline">¶</a></h2>
+<p>Being statically typed C# supports method overloading and this is used
+extensively by LINQ. For example, the <tt class="docutils literal"><span class="pre">SelectMany()</span></tt> method has the following
+four overloads:</p>
+<div class="highlight-c#"><div class="highlight"><pre><span class="n">SelectMany</span><span class="p">&lt;</span><span class="n">TSource</span><span class="p">,</span> <span class="n">TResult</span><span class="p">&gt;(</span><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">TSource</span><span class="p">&gt;,</span>
+                             <span class="n">Func</span><span class="p">&lt;</span><span class="n">TSource</span><span class="p">,</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">TResult</span><span class="p">&gt;&gt;)</span>
+
+<span class="n">SelectMany</span><span class="p">&lt;</span><span class="n">TSource</span><span class="p">,</span> <span class="n">TResult</span><span class="p">&gt;(</span><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">TSource</span><span class="p">&gt;,</span>
+                             <span class="n">Func</span><span class="p">&lt;</span><span class="n">TSource</span><span class="p">,</span> <span class="n">Int32</span><span class="p">,</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">TResult</span><span class="p">&gt;&gt;)</span>
+
+<span class="n">SelectMany</span><span class="p">&lt;</span><span class="n">TSource</span><span class="p">,</span> <span class="n">TCollection</span><span class="p">,</span> <span class="n">TResult</span><span class="p">&gt;(</span><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">TSource</span><span class="p">&gt;,</span>
+                                          <span class="n">Func</span><span class="p">&lt;</span><span class="n">TSource</span><span class="p">,</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">TCollection</span><span class="p">&gt;&gt;,</span>
+                                          <span class="n">Func</span><span class="p">&lt;</span><span class="n">TSource</span><span class="p">,</span> <span class="n">TCollection</span><span class="p">,</span> <span class="n">TResult</span><span class="p">&gt;)</span>
+
+<span class="n">SelectMany</span><span class="p">&lt;</span><span class="n">TSource</span><span class="p">,</span> <span class="n">TCollection</span><span class="p">,</span> <span class="n">TResult</span><span class="p">&gt;(</span><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">TSource</span><span class="p">&gt;,</span>
+                                          <span class="n">Func</span><span class="p">&lt;</span><span class="n">TSource</span><span class="p">,</span> <span class="n">Int32</span><span class="p">,</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">TCollection</span><span class="p">&gt;&gt;,</span>
+                                          <span class="n">Func</span><span class="p">&lt;</span><span class="n">TSource</span><span class="p">,</span> <span class="n">TCollection</span><span class="p">,</span> <span class="n">TResult</span><span class="p">&gt;)</span>
+</pre></div>
+</div>
+<p>These four overloads perform quite distinct, although related, operations.  In
+<tt class="docutils literal"><span class="pre">asq</span></tt> the equivalent of these overloads are methods with separate - and more
+descriptive - names:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">select_many</span><span class="p">(</span><span class="n">collection_selector</span><span class="p">,</span> <span class="n">result_selector</span><span class="p">)</span>
+
+<span class="n">select_many_with_index</span><span class="p">(</span><span class="n">collection_selector</span><span class="p">,</span> <span class="n">result_selector</span><span class="p">)</span>
+
+<span class="n">select_many_with_correspondence</span><span class="p">(</span><span class="n">collection_selector</span><span class="p">,</span> <span class="n">result_selector</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Default arguments allow the Python <tt class="docutils literal"><span class="pre">select_many()</span></tt> method to perform the
+equivalent function as the first and third C# overloads and
+<tt class="docutils literal"><span class="pre">select_many_with_index()</span></tt> the second and fourth overloads.  The third Python
+method provides a simpler alternative to the second version in some scenarios.</p>
+</div>
+<div class="section" id="equality-comparers">
+<h2>Equality comparers<a class="headerlink" href="#equality-comparers" title="Permalink to this headline">¶</a></h2>
+<p>Many .NET containers and and LINQ operators allow the specification of
+comparer objects, particularly IEqualityComparer. This is important in C#
+because equality in C# using the equality operator is by reference rather than
+value.  The use of separate comparer types is not idiomatic in Python and in
+general no attempt has been made to support the equivalent of LINQ operator
+overloads which accept equality comparers.</p>
+<p>Two <tt class="docutils literal"><span class="pre">asq</span></tt> operators which <em>do</em> accept equality comparison functions are
+<tt class="docutils literal"><span class="pre">contains()</span></tt> and <tt class="docutils literal"><span class="pre">sequence_equal()</span></tt>.</p>
+</div>
+<div class="section" id="style-changes">
+<h2>Style changes<a class="headerlink" href="#style-changes" title="Permalink to this headline">¶</a></h2>
+<p>All class and method names in <tt class="docutils literal"><span class="pre">asq</span></tt> are compatible with the PEP 8 style-
+guide.  This necessarily requires that they are different to the .NET methods,
+so, for example, <tt class="docutils literal"><span class="pre">SelectMany()</span></tt> in .NET becomes <tt class="docutils literal"><span class="pre">select_many()</span></tt> in <tt class="docutils literal"><span class="pre">asq</span></tt>.</p>
+<p>The LINQ IEnumerable extension methods which create new sequences rather than
+operate on existing sequences have become module-scope free function
+<em>initiators</em> in <tt class="docutils literal"><span class="pre">asq</span></tt> in the <tt class="docutils literal"><span class="pre">initiators</span></tt> sub-module.</p>
+</div>
+<div class="section" id="specific-naming-changes">
+<h2>Specific naming changes<a class="headerlink" href="#specific-naming-changes" title="Permalink to this headline">¶</a></h2>
+<p>Owing to clashes with existing Python types, some specific name changes have
+been made. Other name changes have been made because overloads in LINQ have
+become separate named methods in <tt class="docutils literal"><span class="pre">asq</span></tt>.</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="44%" />
+<col width="56%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">LINQ</th>
+<th class="head"><cite>asq</cite></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><tt class="docutils literal"><span class="pre">IEnumerable</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">query(iterable)</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">range()</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">integers()</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">except()</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">difference()</span></tt></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="selector-and-predicate-factories">
+<h2>Selector and predicate factories<a class="headerlink" href="#selector-and-predicate-factories" title="Permalink to this headline">¶</a></h2>
+<p>Lambdas in Python are relatively verbose compared to C# lambdas and have the
+further restriction that they cannot span multiple lines.  Selector and
+predicate factories are provided to <tt class="docutils literal"><span class="pre">asq</span></tt> to generate common lambda forms.
+These have some out-of-the-box equivalent in LINQ.</p>
+</div>
+<div class="section" id="execution-engine">
+<h2>Execution engine<a class="headerlink" href="#execution-engine" title="Permalink to this headline">¶</a></h2>
+<p>The LINQ implementation in .NET converts query expressions or method chains
+into an abstract representation of the query in the form of expression trees.
+This allows decoupling of query specification from the form of the which will
+be queried. This allows queries to be applied to diverse data sources including
+object sequences as represented by IEnumerable (LINQ-to-objects), database
+(LINQ-to-SQL), XML (LINQ-to-XML) or indeed any other data source for which a
+LINQ provider has been created.</p>
+<p>At this stage in it`s development <tt class="docutils literal"><span class="pre">asq</span></tt> sets out to be a solid, Pythonic,
+functional equivalent of LINQ-to-objects only.  With only one data provider
+there is not advantage to representing queries in some abstract intermediate
+representation.  An expression tree based implementation of <tt class="docutils literal"><span class="pre">asq</span></tt> may be
+created in future.</p>
+</div>
+<div class="section" id="pythonic-behaviour">
+<h2>Pythonic behaviour<a class="headerlink" href="#pythonic-behaviour" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="container-creation">
+<h3>Container creation<a class="headerlink" href="#container-creation" title="Permalink to this headline">¶</a></h3>
+<p>Included in <tt class="docutils literal"><span class="pre">asq</span></tt> are several additions to support idiomatic Python usage.
+The first group are the <tt class="docutils literal"><span class="pre">to_*()</span></tt> methods where * is a placeholder for various
+built-in types (<tt class="docutils literal"><span class="pre">list</span></tt>, <tt class="docutils literal"><span class="pre">set</span></tt>, <tt class="docutils literal"><span class="pre">dict</span></tt>, <tt class="docutils literal"><span class="pre">tuple</span></tt>) and <tt class="docutils literal"><span class="pre">asq</span></tt> provided
+types (<tt class="docutils literal"><span class="pre">lookup</span></tt>).</p>
+</div>
+<div class="section" id="special-methods">
+<h3>Special methods<a class="headerlink" href="#special-methods" title="Permalink to this headline">¶</a></h3>
+<p>The following Python special methods are supported by the <tt class="docutils literal"><span class="pre">Queryable</span></tt> type
+to support idiomatic Python usage.</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="43%" />
+<col width="35%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Special method</th>
+<th class="head">Purpose</th>
+<th class="head">Equivalent query operator</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><tt class="docutils literal"><span class="pre">__contains__</span></tt></td>
+<td>Support for the <tt class="docutils literal"><span class="pre">in</span></tt> operator</td>
+<td><tt class="docutils literal"><span class="pre">contains()</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">__getitem__</span></tt></td>
+<td>Support for indexing with []</td>
+<td><tt class="docutils literal"><span class="pre">element_at()</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">__reversed__</span></tt></td>
+<td>Support for reversed() built-in</td>
+<td><tt class="docutils literal"><span class="pre">reverse()</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">__repr__</span></tt></td>
+<td>Stringified representation</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">__str__</span></tt></td>
+<td>Stringified representation</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>So, for example, the expression:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">5</span> <span class="ow">in</span> <span class="n">query</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>is equivalent to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">query</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/asq_logo_150.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Differences from LINQ</a><ul>
+<li><a class="reference internal" href="#embedded-domain-specific-language">Embedded Domain Specific Language</a></li>
+<li><a class="reference internal" href="#let-bindings"><tt class="docutils literal"><span class="pre">let</span></tt> bindings</a></li>
+<li><a class="reference internal" href="#extension-methods">Extension methods</a></li>
+<li><a class="reference internal" href="#overloading">Overloading</a></li>
+<li><a class="reference internal" href="#equality-comparers">Equality comparers</a></li>
+<li><a class="reference internal" href="#style-changes">Style changes</a></li>
+<li><a class="reference internal" href="#specific-naming-changes">Specific naming changes</a></li>
+<li><a class="reference internal" href="#selector-and-predicate-factories">Selector and predicate factories</a></li>
+<li><a class="reference internal" href="#execution-engine">Execution engine</a></li>
+<li><a class="reference internal" href="#pythonic-behaviour">Pythonic behaviour</a><ul>
+<li><a class="reference internal" href="#container-creation">Container creation</a></li>
+<li><a class="reference internal" href="#special-methods">Special methods</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="reference/extension.html"
+                        title="previous chapter"><tt class="docutils literal"><span class="pre">asq.extension</span></tt></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="faq.html"
+                        title="next chapter">Frequently Asked Questions</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/differences.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="faq.html" title="Frequently Asked Questions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="reference/extension.html" title="asq.extension"
+             >previous</a> |</li>
+        <li><a href="index.html">asq v1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Robert Smallshire.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

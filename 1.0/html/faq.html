@@ -1,0 +1,207 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Frequently Asked Questions &mdash; asq v1.0 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="asq v1.0 documentation" href="index.html" />
+    <link rel="next" title="Changes" href="changes.html" />
+    <link rel="prev" title="Differences from LINQ" href="differences.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="changes.html" title="Changes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="differences.html" title="Differences from LINQ"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">asq v1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="frequently-asked-questions">
+<h1>Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="where-are-map-filter-and-reduce">
+<h2>Where are <tt class="docutils literal"><span class="pre">map()</span></tt>, <tt class="docutils literal"><span class="pre">filter()</span></tt> and <tt class="docutils literal"><span class="pre">reduce()</span></tt>?<a class="headerlink" href="#where-are-map-filter-and-reduce" title="Permalink to this headline">¶</a></h2>
+<p>All three of these operators exist in <tt class="docutils literal"><span class="pre">asq</span></tt> with different spelling for
+consistency with LINQ:</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="59%" />
+<col width="41%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Python Standard Libary</th>
+<th class="head">asq</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><tt class="docutils literal"><span class="pre">map()</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">select()</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">filter()</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">where()</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">reduce()</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">aggregate()</span></tt></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="where-are-fold-foldl-and-foldr">
+<h2>Where are <tt class="docutils literal"><span class="pre">fold()</span></tt>, <tt class="docutils literal"><span class="pre">foldl()</span></tt> and <tt class="docutils literal"><span class="pre">foldr()</span></tt>?<a class="headerlink" href="#where-are-fold-foldl-and-foldr" title="Permalink to this headline">¶</a></h2>
+<p>Folds in <tt class="docutils literal"><span class="pre">asq</span></tt> can be performed using <tt class="docutils literal"><span class="pre">aggregate()</span></tt>. Here are the
+equivalents of some Haskell code using folds and the Python <tt class="docutils literal"><span class="pre">asq</span></tt> code using
+<tt class="docutils literal"><span class="pre">aggregate()</span></tt>:</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Haskell</th>
+<th class="head">asq</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><tt class="docutils literal"><span class="pre">foldl</span> <span class="pre">f</span> <span class="pre">seed</span> <span class="pre">seq</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">query(seq).aggregate(f,</span> <span class="pre">seed)</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">foldr</span> <span class="pre">f</span> <span class="pre">seed</span> <span class="pre">seq</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">query(seq).reverse().aggregate(f,</span> <span class="pre">seed)</span></tt></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="wouldn-t-generators-be-a-better-name-for-what-asq-calls-initiators">
+<h2>Wouldn&#8217;t generators be a better name for what <tt class="docutils literal"><span class="pre">asq</span></tt> calls initiators?<a class="headerlink" href="#wouldn-t-generators-be-a-better-name-for-what-asq-calls-initiators" title="Permalink to this headline">¶</a></h2>
+<p>Possibly, but it could be confused with other uses of the word &#8216;generator&#8217; in
+Python.  In fact, <tt class="docutils literal"><span class="pre">asq</span></tt>&#8216;s initiators might actually <em>be</em> generators but the
+essential point is that they &#8216;initiate&#8217; the fluent query interface of <tt class="docutils literal"><span class="pre">asq</span></tt>.</p>
+</div>
+<div class="section" id="how-do-i-pronounce-asq">
+<h2>How do I pronounce <tt class="docutils literal"><span class="pre">asq</span></tt>?<a class="headerlink" href="#how-do-i-pronounce-asq" title="Permalink to this headline">¶</a></h2>
+<p>See the answer to the next question.</p>
+</div>
+<div class="section" id="where-does-the-name-asq-come-from">
+<h2>Where does the name <tt class="docutils literal"><span class="pre">asq</span></tt> come from?<a class="headerlink" href="#where-does-the-name-asq-come-from" title="Permalink to this headline">¶</a></h2>
+<p>Well, &#8220;asq&#8221; is homophonic with &#8220;ask&#8221; which is in turn synonymous with &#8220;query&#8221;.
+Further more, &#8220;query&#8221; contains a &#8220;q&#8221; which rather neatly takes us back to the
+&#8220;q&#8221; in &#8220;asq&#8221;. The inspiration for <tt class="docutils literal"><span class="pre">asq</span></tt> comes from &#8220;LINQ&#8221; where the &#8220;Q&#8221; also
+stands for &#8220;query&#8221;. Finally, the glyph &#8220;q&#8221; is mirror symmetric with &#8220;p&#8221; and
+replacing the &#8220;q&#8221; in &#8220;asq&#8221; with &#8220;p&#8221; gives &#8220;asp&#8221; which also rhymes with &#8220;asq&#8221;
+but more importantly is synonymous with &#8220;snake&#8221;. &#8220;asq&#8221; is written in Python,
+and pythons are a kind of snake, although the programming language is actually
+named after a popular British comedy troupe and nothing to do with snakes at
+all. Or something.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/asq_logo_150.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Frequently Asked Questions</a><ul>
+<li><a class="reference internal" href="#where-are-map-filter-and-reduce">Where are <tt class="docutils literal"><span class="pre">map()</span></tt>, <tt class="docutils literal"><span class="pre">filter()</span></tt> and <tt class="docutils literal"><span class="pre">reduce()</span></tt>?</a></li>
+<li><a class="reference internal" href="#where-are-fold-foldl-and-foldr">Where are <tt class="docutils literal"><span class="pre">fold()</span></tt>, <tt class="docutils literal"><span class="pre">foldl()</span></tt> and <tt class="docutils literal"><span class="pre">foldr()</span></tt>?</a></li>
+<li><a class="reference internal" href="#wouldn-t-generators-be-a-better-name-for-what-asq-calls-initiators">Wouldn&#8217;t generators be a better name for what <tt class="docutils literal"><span class="pre">asq</span></tt> calls initiators?</a></li>
+<li><a class="reference internal" href="#how-do-i-pronounce-asq">How do I pronounce <tt class="docutils literal"><span class="pre">asq</span></tt>?</a></li>
+<li><a class="reference internal" href="#where-does-the-name-asq-come-from">Where does the name <tt class="docutils literal"><span class="pre">asq</span></tt> come from?</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="differences.html"
+                        title="previous chapter">Differences from LINQ</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="changes.html"
+                        title="next chapter">Changes</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/faq.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="changes.html" title="Changes"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="differences.html" title="Differences from LINQ"
+             >previous</a> |</li>
+        <li><a href="index.html">asq v1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Robert Smallshire.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

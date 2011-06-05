@@ -1,0 +1,210 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>asq.record &mdash; asq v1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="asq v1.0 documentation" href="../index.html" />
+    <link rel="up" title="API Reference" href="reference.html" />
+    <link rel="next" title="asq.extension" href="extension.html" />
+    <link rel="prev" title="asq.predicates" href="predicates.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="extension.html" title="asq.extension"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="predicates.html" title="asq.predicates"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">asq v1.0 documentation</a> &raquo;</li>
+          <li><a href="reference.html" accesskey="U">API Reference</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-asq.record">
+<span id="asq-record"></span><h1><tt class="docutils literal"><span class="pre">asq.record</span></tt><a class="headerlink" href="#module-asq.record" title="Permalink to this headline">¶</a></h1>
+<p>Records provide a convenient anonymous class which can be useful for
+managing intermediate query results. <tt class="docutils literal"><span class="pre">new()</span></tt> provides a concise way to
+create <tt class="docutils literal"><span class="pre">Records</span></tt> in the middle of a query.</p>
+<div class="section" id="asq-record-record">
+<h2><tt class="docutils literal"><span class="pre">asq.record.Record</span></tt><a class="headerlink" href="#asq-record-record" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><dl class="class">
+<dt id="asq.record.Record">
+<em class="property">class </em><tt class="descclassname">asq.record.</tt><tt class="descname">Record</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#asq.record.Record" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class to which any attribute can be added at construction.</p>
+<dl class="method">
+<dt id="asq.record.Record.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#asq.record.Record.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialise a Record with an attribute for each keyword argument.</p>
+<p>The attributes of a Record are mutable and may be read from and written
+to using regular Python instance attribute syntax.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>**kwargs</strong> &#8211; Each keyword argument will be used to initialise an
+attribute with the same name as the argument and the given
+value.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="asq.record.Record.__repr__">
+<tt class="descname">__repr__</tt><big>(</big><big>)</big><a class="headerlink" href="#asq.record.Record.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>A valid Python expression string representation of the Record.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="asq.record.Record.__str__">
+<tt class="descname">__str__</tt><big>(</big><big>)</big><a class="headerlink" href="#asq.record.Record.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>A string representation of the Record.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div></blockquote>
+</div>
+<div class="section" id="asq-record-new">
+<h2><tt class="docutils literal"><span class="pre">asq.record.new</span></tt><a class="headerlink" href="#asq-record-new" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><dl class="function">
+<dt id="asq.record.new">
+<tt class="descclassname">asq.record.</tt><tt class="descname">new</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#asq.record.new" title="Permalink to this definition">¶</a></dt>
+<dd><p>A convenience factory for creating Records.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>**kwargs</strong> &#8211; Each keyword argument will be used to initialise an
+attribute with the same name as the argument and the given
+value.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A Record which has a named attribute for each of the keyword arguments.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>Create an employee and the get and set attributes:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">employee</span> <span class="o">=</span> <span class="n">new</span><span class="p">(</span><span class="n">age</span><span class="o">=</span><span class="mi">34</span><span class="p">,</span> <span class="n">sex</span><span class="o">=</span><span class="s">&#39;M&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;Joe Bloggs&#39;</span><span class="p">,</span> <span class="n">scores</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">employee</span>
+<span class="go">Record(age=34, scores=[3, 2, 9, 8], name=&#39;Joe Bloggs&#39;, sex=&#39;M&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">employee</span><span class="o">.</span><span class="n">age</span>
+<span class="go">34</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">employee</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;Joe Bloggs&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">employee</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="mi">35</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">employee</span><span class="o">.</span><span class="n">age</span>
+<span class="go">35</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/asq_logo_150.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">asq.record</span></tt></a><ul>
+<li><a class="reference internal" href="#asq-record-record"><tt class="docutils literal"><span class="pre">asq.record.Record</span></tt></a></li>
+<li><a class="reference internal" href="#asq-record-new"><tt class="docutils literal"><span class="pre">asq.record.new</span></tt></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="predicates.html"
+                        title="previous chapter"><tt class="docutils literal docutils literal"><span class="pre">asq.predicates</span></tt></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="extension.html"
+                        title="next chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">asq.extension</span></tt></a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/reference/record.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="extension.html" title="asq.extension"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="predicates.html" title="asq.predicates"
+             >previous</a> |</li>
+        <li><a href="../index.html">asq v1.0 documentation</a> &raquo;</li>
+          <li><a href="reference.html" >API Reference</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Robert Smallshire.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,247 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>asq.extension &mdash; asq v1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="asq v1.0 documentation" href="../index.html" />
+    <link rel="up" title="API Reference" href="reference.html" />
+    <link rel="next" title="Differences from LINQ" href="../differences.html" />
+    <link rel="prev" title="asq.record" href="record.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../differences.html" title="Differences from LINQ"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="record.html" title="asq.record"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">asq v1.0 documentation</a> &raquo;</li>
+          <li><a href="reference.html" accesskey="U">API Reference</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-asq.extension">
+<span id="asq-extension"></span><h1><tt class="docutils literal"><span class="pre">asq.extension</span></tt><a class="headerlink" href="#module-asq.extension" title="Permalink to this headline">¶</a></h1>
+<p>Adding extension operators.</p>
+<p>The <tt class="docutils literal"><span class="pre">extension</span></tt> modules contains tools for registering new extension
+operators with <tt class="docutils literal"><span class="pre">asq</span></tt>. This is achieved by dynamically adding new methods to
+<tt class="docutils literal"><span class="pre">Queryable</span></tt> and possibly its subclasses.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><a class="reference internal" href="#asq.extension.add_method" title="asq.extension.add_method"><tt class="xref py py-obj docutils literal"><span class="pre">add_method</span></tt></a></td>
+<td>Add an existing function to a class as a method.</td>
+</tr>
+<tr><td><a class="reference internal" href="#asq.extension.extend" title="asq.extension.extend"><tt class="xref py py-obj docutils literal"><span class="pre">extend</span></tt></a></td>
+<td>A function decorator for extending an existing class.</td>
+</tr>
+</tbody>
+</table>
+<dl class="function">
+<dt id="asq.extension.add_method">
+<tt class="descclassname">asq.extension.</tt><tt class="descname">add_method</tt><big>(</big><em>function</em>, <em>klass</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#asq.extension.add_method" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an existing function to a class as a method.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Consider using the extend decorator as a more readable alternative
+to using this function directly.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>function</strong> &#8211; The function to be added to the class klass.</li>
+<li><strong>klass</strong> &#8211; The class to which the new method will be added.</li>
+<li><strong>name</strong> &#8211; An optional name for the new method.  If omitted or None the
+original name of the function is used.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The function argument unmodified.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Raises :</th><td class="field-body"><p class="first last">ValueError - If klass already has an attribute with the same name as the
+extension method.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>Define a function called <tt class="docutils literal"><span class="pre">every_second()</span></tt> which returns every second
+element from the source and add it to <tt class="docutils literal"><span class="pre">Queryable</span></tt> as a new query
+operator called <tt class="docutils literal"><span class="pre">alternate()</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">every_second</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">generate</span><span class="p">():</span>
+<span class="gp">... </span>        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>            <span class="k">if</span> <span class="n">index</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="gp">... </span>                <span class="k">yield</span> <span class="n">item</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create</span><span class="p">(</span><span class="n">generate</span><span class="p">())</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">asq.extension</span> <span class="kn">import</span> <span class="n">add_method</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">asq.queryables</span> <span class="kn">import</span> <span class="n">Queryable</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add_method</span><span class="p">(</span><span class="n">every_second</span><span class="p">,</span> <span class="n">Queryable</span><span class="p">,</span> <span class="s">&quot;alternate&quot;</span><span class="p">)</span>
+<span class="go">&lt;function every_second at 0x0000000002D2D5C8&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">alternate</span><span class="p">()</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[5, 3, 0, 5, 9, 7]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="asq.extension.extend">
+<tt class="descclassname">asq.extension.</tt><tt class="descname">extend</tt><big>(</big><em>klass</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#asq.extension.extend" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function decorator for extending an existing class.</p>
+<p>Use as a decorator for functions to add to an existing class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>klass</strong> &#8211; The class to be decorated.</li>
+<li><strong>name</strong> &#8211; The name the new method is to be given in the klass class.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A decorator function which accepts a single function as its only
+argument.  The decorated function will be added to class klass.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Raises :</th><td class="field-body"><p class="first last">ValueError - If klass already has an attribute with the same name as the
+extension method.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>Define a new query method called <tt class="docutils literal"><span class="pre">pairs()</span></tt> which iterates over
+successive pairs in the source iterable, add it to the <tt class="docutils literal"><span class="pre">Queryable</span></tt>
+class and use it to execute a query.  Note that extension methods
+defined in this way will typically need to call internal methods of
+<tt class="docutils literal"><span class="pre">Queryable</span></tt>, such as the <tt class="docutils literal"><span class="pre">_create()</span></tt> method used here to construct a
+new <tt class="docutils literal"><span class="pre">Queryable</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">asq.extension</span> <span class="kn">import</span> <span class="n">extend</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">asq.queryables</span> <span class="kn">import</span> <span class="n">Queryable</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@extend</span><span class="p">(</span><span class="n">Queryable</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">generate_pairs</span><span class="p">():</span>
+<span class="gp">... </span>        <span class="n">i</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="n">sentinel</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
+<span class="gp">... </span>        <span class="n">prev</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">sentinel</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">prev</span> <span class="ow">is</span> <span class="n">sentinel</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">return</span>
+<span class="gp">... </span>        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">i</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">yield</span> <span class="n">prev</span><span class="p">,</span> <span class="n">item</span>
+<span class="gp">... </span>            <span class="n">prev</span> <span class="o">=</span> <span class="n">item</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create</span><span class="p">(</span><span class="n">generate_pairs</span><span class="p">())</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">asq.initiators</span> <span class="kn">import</span> <span class="n">query</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">pairs</span><span class="p">()</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[(5, 4), (4, 7), (7, 2), (2, 8), (8, 9), (9, 1), (1, 0), (0, 4)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/asq_logo_150.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="record.html"
+                        title="previous chapter"><tt class="docutils literal"><span class="pre">asq.record</span></tt></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../differences.html"
+                        title="next chapter">Differences from LINQ</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/reference/extension.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../differences.html" title="Differences from LINQ"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="record.html" title="asq.record"
+             >previous</a> |</li>
+        <li><a href="../index.html">asq v1.0 documentation</a> &raquo;</li>
+          <li><a href="reference.html" >API Reference</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Robert Smallshire.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

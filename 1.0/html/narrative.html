@@ -1,0 +1,1100 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>asq Introduction &mdash; asq v1.0 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="asq v1.0 documentation" href="index.html" />
+    <link rel="next" title="API Reference" href="reference/reference.html" />
+    <link rel="prev" title="Copyright" href="front_matter/front_matter.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="reference/reference.html" title="API Reference"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="front_matter/front_matter.html" title="Copyright"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">asq v1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="asq-introduction">
+<h1><tt class="docutils literal"><span class="pre">asq</span></tt> Introduction<a class="headerlink" href="#asq-introduction" title="Permalink to this headline">¶</a></h1>
+<p><tt class="docutils literal"><span class="pre">asq</span></tt> implements a chained declarative style queries for Python <em>iterables</em>.
+This provides an alternative to traditional <tt class="docutils literal"><span class="pre">for</span></tt> loops or comprehensions
+which are ubiquitious in Python.  Query methods can offer the following
+advantages over loops or comprehensions:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><strong>Concision</strong>: <tt class="docutils literal"><span class="pre">asq</span></tt> query expressions can be to the point, especially
+when combining multiple queries.</li>
+<li><strong>Readability</strong>: Chained <tt class="docutils literal"><span class="pre">asq</span></tt> query operators can have superior
+readability to nested or chained comprehensions.  For example, multi-key
+sorting is much clearer with <tt class="docutils literal"><span class="pre">asq</span></tt> than with other approaches.</li>
+<li><strong>Abstraction</strong>: Query expressions in <tt class="docutils literal"><span class="pre">asq</span></tt> decouple query specification
+from the execution mechanism giving more flexibility with how query results
+are determined, so for example queries can be executed in parallel with
+minimal changes.</li>
+</ol>
+</div></blockquote>
+<p>More complex queries tend to show greater benefits when using <tt class="docutils literal"><span class="pre">asq</span></tt>.  Simple
+transformations are probably best left as regular Python comprehensions.  It&#8217;s
+easy to mix and match <tt class="docutils literal"><span class="pre">asq</span></tt> with comprehensions and indeed any other Python
+function which produces or consumes <em>iterables</em>.</p>
+</div>
+<div class="section" id="installing-asq">
+<h1>Installing <tt class="docutils literal"><span class="pre">asq</span></tt><a class="headerlink" href="#installing-asq" title="Permalink to this headline">¶</a></h1>
+<p><tt class="docutils literal"><span class="pre">asq</span></tt> is available on the <a class="reference external" href="http://pypi.python.org/pypi/asq/">Python Package Index</a> (PyPI) and can be installed with
+<tt class="docutils literal"><span class="pre">easy_install</span></tt> so long as you have <a class="reference external" href="http://pypi.python.org/pypi/setuptools/">setuptools</a> installed already:</p>
+<div class="highlight-python"><pre>$ easy_install asq</pre>
+</div>
+<p>Alternatively, you can download and unpack the source distribution from the
+<tt class="docutils literal"><span class="pre">asq</span></tt> <a class="reference external" href="http://code.google.com/p/asq/downloads/list">downloads page</a> or PyPI. You should then unpack the source
+distribution into a temporary directory and run the setup script which will
+install <tt class="docutils literal"><span class="pre">asq</span></tt> into the current Python environment, for example:</p>
+<div class="highlight-python"><pre>$ tar xzf asq-1.0.tar.gz
+$ cd asq-1.0
+$ python setup.py install</pre>
+</div>
+<p>If you are using Python 2.6 you will also need to install the back-ported
+<a class="reference external" href="http://pypi.python.org/pypi/ordereddict">ordereddict</a> module which was introduced in Python 2.7.</p>
+</div>
+<div class="section" id="diving-in">
+<h1>Diving in<a class="headerlink" href="#diving-in" title="Permalink to this headline">¶</a></h1>
+<p>A few simple examples will help to illustrate use of <tt class="docutils literal"><span class="pre">asq</span></tt>. We&#8217;ll need some
+data to work with, so let&#8217;s set up a simple list of student records, where each
+student is represented by a dictionary:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">students</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">firstname</span><span class="o">=</span><span class="s">&#39;Joe&#39;</span><span class="p">,</span> <span class="n">lastname</span><span class="o">=</span><span class="s">&#39;Blogs&#39;</span><span class="p">,</span> <span class="n">scores</span><span class="o">=</span><span class="p">[</span><span class="mi">56</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">89</span><span class="p">]),</span>
+            <span class="nb">dict</span><span class="p">(</span><span class="n">firstname</span><span class="o">=</span><span class="s">&#39;John&#39;</span><span class="p">,</span> <span class="n">lastname</span><span class="o">=</span><span class="s">&#39;Doe&#39;</span><span class="p">,</span> <span class="n">scores</span><span class="o">=</span><span class="p">[</span><span class="mi">34</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">93</span><span class="p">]),</span>
+            <span class="nb">dict</span><span class="p">(</span><span class="n">firstname</span><span class="o">=</span><span class="s">&#39;Jane&#39;</span><span class="p">,</span> <span class="n">lastname</span><span class="o">=</span><span class="s">&#39;Doe&#39;</span><span class="p">,</span> <span class="n">scores</span><span class="o">=</span><span class="p">[</span><span class="mi">33</span><span class="p">,</span> <span class="mi">94</span><span class="p">,</span> <span class="mi">91</span><span class="p">,</span> <span class="mi">13</span><span class="p">]),</span>
+            <span class="nb">dict</span><span class="p">(</span><span class="n">firstname</span><span class="o">=</span><span class="s">&#39;Ola&#39;</span><span class="p">,</span> <span class="n">lastname</span><span class="o">=</span><span class="s">&#39;Nordmann&#39;</span><span class="p">,</span> <span class="n">scores</span><span class="o">=</span><span class="p">[</span><span class="mi">98</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">87</span><span class="p">]),</span>
+            <span class="nb">dict</span><span class="p">(</span><span class="n">firstname</span><span class="o">=</span><span class="s">&#39;Kari&#39;</span><span class="p">,</span> <span class="n">lastname</span><span class="o">=</span><span class="s">&#39;Nordmann&#39;</span><span class="p">,</span> <span class="n">scores</span><span class="o">=</span><span class="p">[</span><span class="mi">86</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">87</span><span class="p">]),</span>
+            <span class="nb">dict</span><span class="p">(</span><span class="n">firstname</span><span class="o">=</span><span class="s">&#39;Mario&#39;</span><span class="p">,</span> <span class="n">lastname</span><span class="o">=</span><span class="s">&#39;Rossi&#39;</span><span class="p">,</span> <span class="n">scores</span><span class="o">=</span><span class="p">[</span><span class="mi">37</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">18</span><span class="p">])]</span>
+</pre></div>
+</div>
+<p>To avoid having to type in this data structure, you can navigate to the root of
+the unpacked source distribution of asq and then import it from <tt class="docutils literal"><span class="pre">pupils.py</span></tt>
+in the examples directory with:</p>
+<div class="highlight-python"><pre>$ cd asq/examples/
+$ python
+Python 2.6.2 (r262:71605, Apr 14 2009, 22:40:02) [MSC v.1500 32 bit (Intel)] on
+win32
+Type "help", "copyright", "credits" or "license" for more information.
+&gt;&gt;&gt; from pupils import students</pre>
+</div>
+<p>Now we can import the query tools we need. We&#8217;ll start with the most commonly
+used import from <tt class="docutils literal"><span class="pre">asq</span></tt> which is the <tt class="docutils literal"><span class="pre">query</span></tt> initiator:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">asq.initiators</span> <span class="kn">import</span> <span class="n">query</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">query</span></tt> initiator allows us to perform queries over any Python iterable,
+such as the <tt class="docutils literal"><span class="pre">students</span></tt> object we imported.</p>
+<p>Let&#8217;s start by creating a simple query to find those students who&#8217;s first names
+begin with a letter &#8216;J&#8217;:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">students</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="k">lambda</span> <span class="n">student</span><span class="p">:</span> <span class="n">student</span><span class="p">[</span><span class="s">&#39;firstname&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;J&#39;</span><span class="p">))</span>
+<span class="go">Queryable(&lt;filter object at 0x00000000031D9B70&gt;)</span>
+</pre></div>
+</div>
+<p>To dissect this line and its result left to right, we have:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>A call to the <tt class="docutils literal"><span class="pre">query(students)</span></tt>. Here <tt class="docutils literal"><span class="pre">query()</span></tt> is a query <em>initiator</em>
+- a factory function for creating a Queryable object from, in this case,
+an iterable. The <tt class="docutils literal"><span class="pre">query()</span></tt> function is the key entry point into the
+query system (although there are others).</li>
+<li>A method call to <tt class="docutils literal"><span class="pre">where()</span></tt>. Where is one of the <tt class="docutils literal"><span class="pre">asq</span></tt> query operators
+and is in fact a method on the Queryable returned by the preceding call to
+<tt class="docutils literal"><span class="pre">query()</span></tt>. The <tt class="docutils literal"><span class="pre">where()</span></tt> query operator accepts a single argument, which
+is a callable predicate (<em>i.e.</em> returning either True or False) function
+which which each element will be tested.</li>
+<li>The predicate passed to <tt class="docutils literal"><span class="pre">where()</span></tt> is defined by the expression <tt class="docutils literal"><span class="pre">lambda</span>
+<span class="pre">student:</span> <span class="pre">student['firstname'].startswith('J')</span></tt> which accepts a single
+argument <tt class="docutils literal"><span class="pre">student</span></tt> which is the element being tested. From the
+<tt class="docutils literal"><span class="pre">student</span></tt> dictionary the first name is extracted and the built-in string
+method <tt class="docutils literal"><span class="pre">startswith()</span></tt> is called on the name.</li>
+<li>The result of the call is a Queryable object. Note that no results have
+yet been produced - because the query has not yet been executed. The
+Queryable object contains all the information required to execute the
+query when results are required.</li>
+</ol>
+</div></blockquote>
+<div class="section" id="initiators">
+<h2>Initiators<a class="headerlink" href="#initiators" title="Permalink to this headline">¶</a></h2>
+<p>All query expressions begin with query <em>initiator</em>. Initiators are the entry
+points to <tt class="docutils literal"><span class="pre">asq</span></tt>. All initiators return Queryables on which any query method
+can be called. We have already seen the <tt class="docutils literal"><span class="pre">query()</span></tt> initiator in use. The
+full list of available query initiators is:</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="34%" />
+<col width="66%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Initiator</th>
+<th class="head">Purpose</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><tt class="docutils literal"><span class="pre">query(iterable)</span></tt></td>
+<td>Make a Queryable from any iterable</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">integers(start,</span> <span class="pre">count)</span></tt></td>
+<td>Make a Queryable sequence of consecutive integers</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">repeat(value,</span> <span class="pre">count)</span></tt></td>
+<td>Make a Queryable from a repeating value</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">empty()</span></tt></td>
+<td>Make a Queryable from an empty sequence</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="when-is-the-query-evaluated">
+<h2>When is the query evaluated?<a class="headerlink" href="#when-is-the-query-evaluated" title="Permalink to this headline">¶</a></h2>
+<p>In order to make the query execute we need to iterate over the Queryable or
+chain additional calls to convert the result to, for example, a list.  We&#8217;ll
+do this by creating the query again, but this time assigning it to a name:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">query</span><span class="p">(</span><span class="n">students</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="k">lambda</span> <span class="n">student</span><span class="p">:</span> <span class="n">student</span><span class="p">[</span><span class="s">&#39;firstname&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;J&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span>
+<span class="go">Queryable(&lt;filter object at 0x00000000031D9BE0&gt;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[{&#39;lastname&#39;: &#39;Blogs&#39;, &#39;firstname&#39;: &#39;Joe&#39;, &#39;scores&#39;: [56, 23, 21, 89]},</span>
+<span class="go"> {&#39;lastname&#39;: &#39;Doe&#39;, &#39;firstname&#39;: &#39;John&#39;, &#39;scores&#39;: [34, 12, 92, 93]},</span>
+<span class="go"> {&#39;lastname&#39;: &#39;Doe&#39;, &#39;firstname&#39;: &#39;Jane&#39;, &#39;scores&#39;: [33, 94, 91, 13]}]</span>
+</pre></div>
+</div>
+<p>Most of the <tt class="docutils literal"><span class="pre">asq</span></tt> query operators like <tt class="docutils literal"><span class="pre">where()</span></tt> use so-called deferred
+execution whereas others which return non-Queryable results use immediate
+execution and force evaluation of any pending deferred operations.</p>
+<p>Queries are executed when the results are realised by converting them to a
+concrete type such as a list, dictionary or set, or by any of the query
+operators which return a single value.</p>
+</div>
+<div class="section" id="query-chaining">
+<h2>Query chaining<a class="headerlink" href="#query-chaining" title="Permalink to this headline">¶</a></h2>
+<p>Most of the query operators can be composed in chains to create more complex
+queries. For example, we could extract and compose the full names of the
+three students resulting from the previous query with:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">students</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;firstname&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;J&#39;</span><span class="p">))</span>      \
+<span class="gp">... </span>             <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;firstname&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39; &#39;</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;lastname&#39;</span><span class="p">])</span> \
+<span class="gp">... </span>             <span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[&#39;Joe Blogs&#39;, &#39;John Doe&#39;, &#39;Jane Doe&#39;]</span>
+
+<span class="go">.. note:</span>
+
+<span class="go">   The backslashes above are Python&#39;s line-continuation character, used here</span>
+<span class="go">   for readability. They are not part of the syntax of the expression.</span>
+</pre></div>
+</div>
+<p>If we would like our results sorted by the students&#8217; minimum scores we can use
+the Python built-in function <tt class="docutils literal"><span class="pre">min()</span></tt> with the <tt class="docutils literal"><span class="pre">order_by</span></tt> query operator:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">students</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;firstname&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;J&#39;</span><span class="p">))</span>      \
+<span class="gp">... </span>               <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="nb">min</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s">&#39;scores&#39;</span><span class="p">]))</span>                   \
+<span class="gp">... </span>               <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;firstname&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39; &#39;</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;lastname&#39;</span><span class="p">])</span> \
+<span class="gp">... </span>               <span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[&#39;John Doe&#39;, &#39;Jane Doe&#39;, &#39;Joe Blogs&#39;]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="query-nesting">
+<h2>Query nesting<a class="headerlink" href="#query-nesting" title="Permalink to this headline">¶</a></h2>
+<p>There is nothing to stop us initiating a sub-query in the course of defining a
+primary query.  For example, to order the students by their average score we
+can invoke the <tt class="docutils literal"><span class="pre">query()</span></tt> initiator a second time and chain the <tt class="docutils literal"><span class="pre">average()</span></tt>
+query operator to determine the mean score to pass to <tt class="docutils literal"><span class="pre">order_by()</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span> <span class="n">query</span><span class="p">(</span><span class="n">students</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">query</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s">&#39;scores&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">average</span><span class="p">())</span> \
+<span class="gp">... </span>                <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="k">lambda</span> <span class="n">student</span><span class="p">:</span> <span class="n">student</span><span class="p">[</span><span class="s">&#39;firstname&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;J&#39;</span><span class="p">))</span> \
+<span class="gp">... </span>                <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;firstname&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39; &#39;</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;lastname&#39;</span><span class="p">])</span> \
+<span class="gp">... </span>                <span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[&#39;Joe Blogs&#39;, &#39;John Doe&#39;, &#39;Jane Doe&#39;]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="selectors">
+<h2>Selectors<a class="headerlink" href="#selectors" title="Permalink to this headline">¶</a></h2>
+<p>Many of the query operators, such as <tt class="docutils literal"><span class="pre">select()</span></tt>, <tt class="docutils literal"><span class="pre">order_by</span></tt> or <tt class="docutils literal"><span class="pre">where()</span></tt>
+accept selector callables for one or more of their arguments.  Typically such
+selectors are used to <em>select</em> or <em>extract</em> a value from an element of the
+query sequence.  Selectors can be any Python callable and examples of commonly
+used selectors are demonstrated below.  In addition, <tt class="docutils literal"><span class="pre">asq</span></tt> provides some
+selector factories as a convenience for generating commonly used forms of
+selectors.</p>
+<p>Most of the selectors used in <tt class="docutils literal"><span class="pre">asq</span></tt> are unary functions, that is, they take
+a single positional argument which is the value of the current element.
+However, some of the query operators do require selectors which take two
+arguments; these cases are noted in the API documentation.</p>
+<div class="section" id="lambdas">
+<h3>Lambdas<a class="headerlink" href="#lambdas" title="Permalink to this headline">¶</a></h3>
+<p>Lambda is probably the most frequently used mechanism for specifying selectors.
+This example squares each element:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">45</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[1, 4489, 1156, 529, 3136, 1156, 2025]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
+<p>Sometime the selector you want cannot be easily expressed as a lambda, or it is
+already available as a function in existing code, such as the standard library.</p>
+<p>In this example we use the built-in <tt class="docutils literal"><span class="pre">len()</span></tt> function as the selector:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">words</span> <span class="o">=</span> <span class="s">&#39;The quick brown fox jumped over the lazy dog&#39;</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">words</span>
+<span class="go">[&#39;The&#39;, &#39;quick&#39;, &#39;brown&#39;, &#39;fox&#39;, &#39;jumped&#39;, &#39;over&#39;, &#39;the&#39;, &#39;lazy&#39;, &#39;dog&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">words</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="nb">len</span><span class="p">)</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[3, 5, 5, 3, 6, 4, 3, 4, 3]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="unbound-methods">
+<h3>Unbound methods<a class="headerlink" href="#unbound-methods" title="Permalink to this headline">¶</a></h3>
+<p>Unbound methods are obtained by referencing the method of a <em>class</em> rather than
+the method of an <em>instance</em>. That is, the <em>self</em> parameter passed as the first
+argument of a method has not yet been specified.  We can pass any unbound
+method which takes only a single argument <em>including</em> the normally implicit
+<em>self</em> as a selector.</p>
+<p>In this example, we use an unbound method <tt class="docutils literal"><span class="pre">upper()</span></tt> of the built-in string
+class:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;the&quot;</span><span class="p">,</span> <span class="s">&quot;quick&quot;</span><span class="p">,</span> <span class="s">&quot;brown&quot;</span><span class="p">,</span> <span class="s">&quot;fox&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">words</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">upper</span><span class="p">)</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[&#39;THE&#39;, &#39;QUICK&#39;, &#39;BROWN&#39;, &#39;FOX&#39;]</span>
+</pre></div>
+</div>
+<p>This has the effect of making the method call <em>on</em> each element in the
+sequence.</p>
+</div>
+<div class="section" id="bound-methods">
+<h3>Bound methods<a class="headerlink" href="#bound-methods" title="Permalink to this headline">¶</a></h3>
+<p>Bound methods are obtained by referencing the method of an <em>instance</em> rather
+than the method of a class.  That is, the instance referred to by the <em>self</em>
+parameter passed as the first argument of a method has already been determined.</p>
+<p>To illustrate, here we create a Multiplier class instances of which multiply by
+a factor specified at initialization when the <tt class="docutils literal"><span class="pre">multiply</span></tt> method is called:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">45</span><span class="p">]</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Multiplier</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">factor</span> <span class="o">=</span> <span class="n">factor</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">multiply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">factor</span> <span class="o">*</span> <span class="n">value</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">five_multiplier</span> <span class="o">=</span> <span class="n">Multiplier</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">times_by_five</span>  <span class="o">=</span> <span class="n">five_multiplier</span><span class="o">.</span><span class="n">multiply</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">times_by_five</span>
+<span class="go">&lt;bound method Multiplier.multiply of &lt;__main__.Multiplier object at 0x0000000002F251D0&gt;&gt;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">times_by_five</span><span class="p">)</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[5, 335, 170, 115, 280, 170, 225]</span>
+</pre></div>
+</div>
+<p>This has the effect of passing each element of the sequence in turn as an
+argument to the bound method.</p>
+</div>
+<div class="section" id="selector-factories">
+<h3>Selector factories<a class="headerlink" href="#selector-factories" title="Permalink to this headline">¶</a></h3>
+<p>Some selector patterns crop up very frequently and so <tt class="docutils literal"><span class="pre">asq</span></tt> provides some
+simple and concise selector factories for these cases.  Selector factories are
+themselves functions which return the actual selector function which can be
+passed in turn to the query operator.</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="38%" />
+<col width="62%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Selector factory</th>
+<th class="head">Created selector function</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><tt class="docutils literal"><span class="pre">k_(key)</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">x[key]</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">a_(name)</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">getattr(x,</span> <span class="pre">name)</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">m_(name,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">getattr(x,</span> <span class="pre">name)(*args,</span> <span class="pre">**kwargs)</span></tt></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<div class="section" id="key-selector-factory">
+<h4>Key selector factory<a class="headerlink" href="#key-selector-factory" title="Permalink to this headline">¶</a></h4>
+<p>For our example, we&#8217;ll create a list of employees, with each employee being
+represented as a Python dictionary:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">employees</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">firstname</span><span class="o">=</span><span class="s">&#39;Joe&#39;</span><span class="p">,</span> <span class="n">lastname</span><span class="o">=</span><span class="s">&#39;Bloggs&#39;</span><span class="p">,</span> <span class="n">grade</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span>
+<span class="gp">... </span>             <span class="nb">dict</span><span class="p">(</span><span class="n">firstname</span><span class="o">=</span><span class="s">&#39;Ola&#39;</span><span class="p">,</span> <span class="n">lastname</span><span class="o">=</span><span class="s">&#39;Nordmann&#39;</span><span class="p">,</span> <span class="n">grade</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span>
+<span class="gp">... </span>             <span class="nb">dict</span><span class="p">(</span><span class="n">firstname</span><span class="o">=</span><span class="s">&#39;Kari&#39;</span><span class="p">,</span> <span class="n">lastname</span><span class="o">=</span><span class="s">&#39;Nordmann&#39;</span><span class="p">,</span> <span class="n">grade</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+<span class="gp">... </span>             <span class="nb">dict</span><span class="p">(</span><span class="n">firstname</span><span class="o">=</span><span class="s">&#39;Jane&#39;</span><span class="p">,</span> <span class="n">lastname</span><span class="o">=</span><span class="s">&#39;Doe&#39;</span><span class="p">,</span> <span class="n">grade</span><span class="o">=</span><span class="mi">4</span><span class="p">),</span>
+<span class="gp">... </span>             <span class="nb">dict</span><span class="p">(</span><span class="n">firstname</span><span class="o">=</span><span class="s">&#39;John&#39;</span><span class="p">,</span> <span class="n">lastname</span><span class="o">=</span><span class="s">&#39;Doe&#39;</span><span class="p">,</span> <span class="n">grade</span><span class="o">=</span><span class="mi">3</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>Let&#8217;s start by looking at an example without selector factories. Our query will
+be to order the employees by descending grade, then by ascending last name and
+finally by ascending first name:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span> <span class="n">query</span><span class="p">(</span><span class="n">employees</span><span class="p">)</span><span class="o">.</span><span class="n">order_by_descending</span><span class="p">(</span><span class="k">lambda</span> <span class="n">employee</span><span class="p">:</span> <span class="n">employee</span><span class="p">[</span><span class="s">&#39;grade&#39;</span><span class="p">])</span> \
+<span class="gp">... </span>                 <span class="o">.</span><span class="n">then_by</span><span class="p">(</span><span class="k">lambda</span> <span class="n">employee</span><span class="p">:</span> <span class="n">employee</span><span class="p">[</span><span class="s">&#39;lastname&#39;</span><span class="p">])</span>          \
+<span class="gp">... </span>                 <span class="o">.</span><span class="n">then_by</span><span class="p">(</span><span class="k">lambda</span> <span class="n">employee</span><span class="p">:</span> <span class="n">employee</span><span class="p">[</span><span class="s">&#39;firstname&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[{&#39;grade&#39;: 4, &#39;lastname&#39;: &#39;Doe&#39;, &#39;firstname&#39;: &#39;Jane&#39;},</span>
+<span class="go"> {&#39;grade&#39;: 3, &#39;lastname&#39;: &#39;Bloggs&#39;, &#39;firstname&#39;: &#39;Joe&#39;},</span>
+<span class="go"> {&#39;grade&#39;: 3, &#39;lastname&#39;: &#39;Doe&#39;, &#39;firstname&#39;: &#39;John&#39;},</span>
+<span class="go"> {&#39;grade&#39;: 3, &#39;lastname&#39;: &#39;Nordmann&#39;, &#39;firstname&#39;: &#39;Ola&#39;},</span>
+<span class="go"> {&#39;grade&#39;: 2, &#39;lastname&#39;: &#39;Nordmann&#39;, &#39;firstname&#39;: &#39;Kari&#39;}]</span>
+</pre></div>
+</div>
+<p>Those lambda expressions can be a bit of a mouthful, especially given Python&#8217;s
+less-than-concise lambda syntax.  We can improve by using less descriptive
+names for the lambda arguments:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span> <span class="n">query</span><span class="p">(</span><span class="n">employees</span><span class="p">)</span><span class="o">.</span><span class="n">order_by_descending</span><span class="p">(</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">e</span><span class="p">[</span><span class="s">&#39;grade&#39;</span><span class="p">])</span>  \
+<span class="gp">... </span>                 <span class="o">.</span><span class="n">then_by</span><span class="p">(</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">e</span><span class="p">[</span><span class="s">&#39;lastname&#39;</span><span class="p">])</span>           \
+<span class="gp">... </span>                 <span class="o">.</span><span class="n">then_by</span><span class="p">(</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">e</span><span class="p">[</span><span class="s">&#39;firstname&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[{&#39;grade&#39;: 4, &#39;lastname&#39;: &#39;Doe&#39;, &#39;firstname&#39;: &#39;Jane&#39;},</span>
+<span class="go"> {&#39;grade&#39;: 3, &#39;lastname&#39;: &#39;Bloggs&#39;, &#39;firstname&#39;: &#39;Joe&#39;},</span>
+<span class="go"> {&#39;grade&#39;: 3, &#39;lastname&#39;: &#39;Doe&#39;, &#39;firstname&#39;: &#39;John&#39;},</span>
+<span class="go"> {&#39;grade&#39;: 3, &#39;lastname&#39;: &#39;Nordmann&#39;, &#39;firstname&#39;: &#39;Ola&#39;},</span>
+<span class="go"> {&#39;grade&#39;: 2, &#39;lastname&#39;: &#39;Nordmann&#39;, &#39;firstname&#39;: &#39;Kari&#39;}]</span>
+</pre></div>
+</div>
+<p>but there&#8217;s still quite a lot of syntactic noise in here.  By using one of the
+selector factories provided by <tt class="docutils literal"><span class="pre">asq</span></tt> we can make this example more concise.
+The particular selector factory we are going to use is called <cite>k_()</cite> where the
+<cite>k</cite> is a mnemonic for &#8216;key&#8217; and the underscore is there purely to make the name
+more unusual to avoid consuming a useful single letter variable name from the
+importing namespace.  <tt class="docutils literal"><span class="pre">k_()</span></tt> takes a single argument which is the name of the
+key to be used when indexing into the element, so the expressions:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">k_</span><span class="p">(</span><span class="s">&#39;foo&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s">&#39;foo&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>are equivalent because in fact the first expression is in fact returning the
+second one. Let&#8217;s see <tt class="docutils literal"><span class="pre">k_()</span></tt> in action reducing the verbosity and apparent
+complexity of the query somewhat:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">asq</span> <span class="kn">import</span> <span class="n">k_</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">employees</span><span class="p">)</span><span class="o">.</span><span class="n">order_by_descending</span><span class="p">(</span><span class="n">k_</span><span class="p">(</span><span class="s">&#39;grade&#39;</span><span class="p">))</span>   \
+<span class="gp">... </span>                <span class="o">.</span><span class="n">then_by</span><span class="p">(</span><span class="n">k_</span><span class="p">(</span><span class="s">&#39;lastname&#39;</span><span class="p">))</span>            \
+<span class="gp">... </span>                <span class="o">.</span><span class="n">then_by</span><span class="p">(</span><span class="n">k_</span><span class="p">(</span><span class="s">&#39;firstname&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[{&#39;grade&#39;: 4, &#39;lastname&#39;: &#39;Doe&#39;, &#39;firstname&#39;: &#39;Jane&#39;},</span>
+<span class="go"> {&#39;grade&#39;: 3, &#39;lastname&#39;: &#39;Bloggs&#39;, &#39;firstname&#39;: &#39;Joe&#39;},</span>
+<span class="go"> {&#39;grade&#39;: 3, &#39;lastname&#39;: &#39;Doe&#39;, &#39;firstname&#39;: &#39;John&#39;},</span>
+<span class="go"> {&#39;grade&#39;: 3, &#39;lastname&#39;: &#39;Nordmann&#39;, &#39;firstname&#39;: &#39;Ola&#39;},</span>
+<span class="go"> {&#39;grade&#39;: 2, &#39;lastname&#39;: &#39;Nordmann&#39;, &#39;firstname&#39;: &#39;Kari&#39;}]</span>
+</pre></div>
+</div>
+<p>It might not be immediately obvious from it&#8217;s name, but <tt class="docutils literal"><span class="pre">k_()</span></tt> works with
+any object supporting indexing with square brackets, so it can also be used
+with an integer &#8216;key&#8217; for retrieved results from sequences such as lists and
+tuples.</p>
+</div>
+<div class="section" id="attribute-selector-factory">
+<h4>Attribute selector factory<a class="headerlink" href="#attribute-selector-factory" title="Permalink to this headline">¶</a></h4>
+<p>The attribute selector factory provided by <tt class="docutils literal"><span class="pre">asq</span></tt> is called <cite>a_()</cite> and it
+creates a selector which retrieves a named attribute from each element.  To
+illustrate its utility, we&#8217;ll re-run the key selector exercise using the
+attribute selector against <tt class="docutils literal"><span class="pre">Employee</span></tt> objects rather than dictionaries.
+First of all, our <tt class="docutils literal"><span class="pre">Employee</span></tt> class:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Employee</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">firstname</span><span class="p">,</span> <span class="n">lastname</span><span class="p">,</span> <span class="n">grade</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">firstname</span> <span class="o">=</span> <span class="n">firstname</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">lastname</span> <span class="o">=</span> <span class="n">lastname</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">grade</span> <span class="o">=</span> <span class="n">grade</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="p">(</span><span class="s">&quot;Employee(&quot;</span> <span class="o">+</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">firstname</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span>
+<span class="gp">... </span>                            <span class="o">+</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lastname</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span>
+<span class="gp">... </span>                            <span class="o">+</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grade</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now the query and its result use the lambda form for the selectors:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">employees</span><span class="p">)</span><span class="o">.</span><span class="n">order_by_descending</span><span class="p">(</span><span class="k">lambda</span> <span class="n">employee</span><span class="p">:</span> <span class="n">employee</span><span class="o">.</span><span class="n">grade</span><span class="p">)</span>  \
+<span class="gp">... </span>                <span class="o">.</span><span class="n">then_by</span><span class="p">(</span><span class="k">lambda</span> <span class="n">employee</span><span class="p">:</span> <span class="n">employee</span><span class="o">.</span><span class="n">lastname</span><span class="p">)</span>           \
+<span class="gp">... </span>                <span class="o">.</span><span class="n">then_by</span><span class="p">(</span><span class="k">lambda</span> <span class="n">employee</span><span class="p">:</span> <span class="n">employee</span><span class="o">.</span><span class="n">firstname</span><span class="p">)</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[Employee(&#39;Jane&#39;, &#39;Doe&#39;, 4), Employee(&#39;Joe&#39;, &#39;Bloggs&#39;, 3),</span>
+<span class="go"> Employee(&#39;John&#39;, &#39;Doe&#39;, 3), Employee(&#39;Ola&#39;, &#39;Nordmann&#39;, 3),</span>
+<span class="go"> Employee(&#39;Kari&#39;, &#39;Nordmann&#39;, 2)]</span>
+</pre></div>
+</div>
+<p>We can make this query more concise by creating our selectors using the <tt class="docutils literal"><span class="pre">a_</span></tt>
+selector factory, where the <cite>a</cite> is a mnemonic for &#8216;attribute&#8217;. <tt class="docutils literal"><span class="pre">a_()</span></tt> accepts
+a single argument which is the name of the attribute to get from each element.
+The expression:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">a_</span><span class="p">(</span><span class="s">&#39;foo&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>is equivalent to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">foo</span>
+</pre></div>
+</div>
+<p>Using this construct we can shorted our query to the more concise:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">employees</span><span class="p">)</span><span class="o">.</span><span class="n">order_by_descending</span><span class="p">(</span><span class="n">a_</span><span class="p">(</span><span class="s">&#39;grade&#39;</span><span class="p">))</span>  \
+<span class="gp">... </span>                <span class="o">.</span><span class="n">then_by</span><span class="p">(</span><span class="n">a_</span><span class="p">(</span><span class="s">&#39;lastname&#39;</span><span class="p">))</span>           \
+<span class="gp">... </span>                <span class="o">.</span><span class="n">then_by</span><span class="p">(</span><span class="n">a_</span><span class="p">(</span><span class="s">&#39;firstname&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[Employee(&#39;Jane&#39;, &#39;Doe&#39;, 4), Employee(&#39;Joe&#39;, &#39;Bloggs&#39;, 3),</span>
+<span class="go"> Employee(&#39;John&#39;, &#39;Doe&#39;, 3), Employee(&#39;Ola&#39;, &#39;Nordmann&#39;, 3),</span>
+<span class="go"> Employee(&#39;Kari&#39;, &#39;Nordmann&#39;, 2)]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="method-selector-factory">
+<h4>Method selector factory<a class="headerlink" href="#method-selector-factory" title="Permalink to this headline">¶</a></h4>
+<p>The method-call selector factory provided by <tt class="docutils literal"><span class="pre">asq</span></tt> is called <cite>m_()</cite> and it
+creates a selector which makes a method call on each element, optionally
+passing positional or named arguments to the method. We&#8217;ll re-run the attribute
+selector exercise using the method selector against a modified <tt class="docutils literal"><span class="pre">Employee</span></tt>
+class which incorporates a couple of methods:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Employee</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">firstname</span><span class="p">,</span> <span class="n">lastname</span><span class="p">,</span> <span class="n">grade</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">firstname</span> <span class="o">=</span> <span class="n">firstname</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">lastname</span> <span class="o">=</span> <span class="n">lastname</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">grade</span> <span class="o">=</span> <span class="n">grade</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="p">(</span><span class="s">&quot;Employee(&quot;</span> <span class="o">+</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">firstname</span><span class="p">)</span>
+<span class="gp">... </span>                            <span class="o">+</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lastname</span><span class="p">)</span>
+<span class="gp">... </span>                            <span class="o">+</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grade</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;)&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">full_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">firstname</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastname</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">award_bonus</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_amount</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">grade</span> <span class="o">*</span> <span class="n">base_amount</span>
+</pre></div>
+</div>
+<p>In its simplest form, the <tt class="docutils literal"><span class="pre">m_()</span></tt> selector factory takes a single argument,
+which is the name of the method to be called as a string. So:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">m_</span><span class="p">(</span><span class="s">&#39;foo&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>is equivalent to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">foo</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>We can use this to easy generate a list of full names for our employees:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">employees</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">m_</span><span class="p">(</span><span class="s">&#39;full_name&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[&#39;Joe Bloggs&#39;, &#39;Ola Nordmann&#39;, &#39;Kari Nordmann&#39;, &#39;Jane Doe&#39;, &#39;John Doe&#39;]</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">m_()</span></tt> selector factory also accepts arbitrary number of additional
+positional or named arguments which will be forwarded to the method when it is
+called on each element. So:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">m_</span><span class="p">(</span><span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>is equivalent to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">foo</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For example to determine total cost of awarding bonuses to our employees on the
+basis of grade, we can do:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">employees</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">m_</span><span class="p">(</span><span class="s">&#39;award_bonus&#39;</span><span class="p">,</span> <span class="mi">1000</span><span class="p">))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[3000, 3000, 2000, 4000, 3000]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="default-selectors-and-the-identity-selector">
+<h3>Default selectors and the identity selector<a class="headerlink" href="#default-selectors-and-the-identity-selector" title="Permalink to this headline">¶</a></h3>
+<p>Any of the selector arguments to query operators in <tt class="docutils literal"><span class="pre">asq</span></tt> may be omitted <a class="footnote-reference" href="#id2" id="id1">[1]</a>
+to allow the use of operators to be simplified.  When a selector is omitted
+the default is used and the documentation makes it clear how that default
+behaves.  In most cases, the default selector is the <tt class="docutils literal"><span class="pre">identity()</span></tt> selector.
+The identity selector is very simple and is equivalent to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">identity</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+</div>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Except the single selector argument to the <tt class="docutils literal"><span class="pre">select()</span></tt> operator itself.</td></tr>
+</tbody>
+</table>
+<p>That is, it is a function that returns it&#8217;s only argument - essentially it&#8217;s a
+do-nothing function.  This is useful because frequently we don&#8217;t want to select
+an attribute or key from an element - we want to use the element value
+directly.  For example, to sort a list of words alphabetically, we can omit the
+selector passed to <tt class="docutils literal"><span class="pre">order_by()</span></tt> allowing if to default to the identity
+selector:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">words</span> <span class="o">=</span> <span class="s">&quot;the quick brown fox jumped over the lazy dog&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">words</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">()</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[&#39;brown&#39;, &#39;dog&#39;, &#39;fox&#39;, &#39;jumped&#39;, &#39;lazy&#39;, &#39;over&#39;, &#39;quick&#39;, &#39;the&#39;, &#39;the&#39;]</span>
+</pre></div>
+</div>
+<p>Some query operators, notably <tt class="docutils literal"><span class="pre">select()</span></tt> perform important optimisations when
+used with the identity operator.  For example the operator <tt class="docutils literal"><span class="pre">select(identity)</span></tt>
+does nothing and simply returns the Queryable on which it was invoked.</p>
+</div>
+</div>
+<div class="section" id="predicates">
+<h2>Predicates<a class="headerlink" href="#predicates" title="Permalink to this headline">¶</a></h2>
+<p>Many of the query operators, such as <tt class="docutils literal"><span class="pre">where()</span></tt>, <tt class="docutils literal"><span class="pre">distinct()</span></tt>, <tt class="docutils literal"><span class="pre">skip()</span></tt>,
+accept predicates.  Predicates are functions which return <tt class="xref docutils literal"><span class="pre">True</span></tt> or
+<tt class="xref docutils literal"><span class="pre">False</span></tt>.  As with selectors (see above) predicates can be defined with
+lambdas, functions, unbound methods, bound methods or indeed any other callable
+that returns True or False.  For convenience <tt class="docutils literal"><span class="pre">asq</span></tt> also provides some
+predicate factories and combinators to concisely build predicates for common
+situations.</p>
+<div class="section" id="id3">
+<h3>Lambdas<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">78</span><span class="p">,</span> <span class="mi">94</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">67</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">35</span><span class="p">)</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[56, 78, 94, 56, 36, 90, 76, 67]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>Functions<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>Here we use the <tt class="docutils literal"><span class="pre">bool()</span></tt> built-in function to remove zeros from the list:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">78</span><span class="p">,</span> <span class="mi">94</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">67</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[56, 23, 78, 94, 56, 12, 34, 36, 90, 23, 76, 4, 67]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h3>Unbound methods<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>Here we use an unbound method of the <tt class="docutils literal"><span class="pre">str</span></tt> class to extract only alphabetic
+strings from a list:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;zero&#39;</span><span class="p">,</span> <span class="s">&#39;one&#39;</span><span class="p">,</span> <span class="s">&#39;2&#39;</span><span class="p">,</span> <span class="s">&#39;3&#39;</span><span class="p">,</span> <span class="s">&#39;four&#39;</span><span class="p">,</span> <span class="s">&#39;five&#39;</span><span class="p">,</span> <span class="s">&#39;6&#39;</span><span class="p">,</span> <span class="s">&#39;seven&#39;</span><span class="p">,</span> <span class="s">&#39;eight&#39;</span><span class="p">,</span> <span class="s">&#39;9&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">isalpha</span><span class="p">)</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[&#39;zero&#39;, &#39;one&#39;, &#39;four&#39;, &#39;five&#39;, &#39;seven&#39;, &#39;eight&#39;]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id6">
+<h3>Bound methods<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p>Bound methods are obtained by referencing the method of an <em>instance</em> rather
+than the method of a class.  That is, the instance referred to by the <em>self</em>
+parameter passed as the first argument of a method has already been determined.</p>
+<p>To illustrate, here we create a variation of Multiplier class earlier with
+a method to test whether a given number is a multiple of the supplied factor:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">48</span><span class="p">,</span> <span class="mi">45</span><span class="p">]</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Multiplier</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="go">  ...     def __init__(self, factor):</span>
+<span class="go">  ...         self.factor = factor</span>
+<span class="go">  ...     def is_multiple(self, value):</span>
+<span class="go">  ...         return value % self.factor == 0</span>
+<span class="go">  ...</span>
+<span class="go">  &gt;&gt;&gt; six_multiplier = Multiplier(6)</span>
+<span class="go">  &gt;&gt;&gt;</span>
+<span class="go">  &gt;&gt;&gt; is_six_a_factor = six_multiplier.is_multiple</span>
+<span class="go">  &gt;&gt;&gt; is_six_a_factor</span>
+<span class="go">  &lt;bound method Multiplier.is_multiple of &lt;__main__.Multiplier object at 0x029FEDF0&gt;&gt;</span>
+<span class="go">  &gt;&gt;&gt;</span>
+<span class="go">  &gt;&gt;&gt; query(numbers).where(is_six_a_factor).to_list()</span>
+<span class="go">  [18, 48]</span>
+</pre></div>
+</div>
+<p>This has the effect of passing each element of the sequence in turn as an
+argument to the bound method which returns True or False.</p>
+</div>
+<div class="section" id="predicate-factories">
+<h3>Predicate factories<a class="headerlink" href="#predicate-factories" title="Permalink to this headline">¶</a></h3>
+<p>For complex predicates inline lambdas can become quite verbose and have
+limited readability.  To mitigate this somewhat, <tt class="docutils literal"><span class="pre">asq</span></tt> provides some
+predicate factories and predicate combinators.</p>
+<p>The provided predicates are:</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="38%" />
+<col width="62%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Predicate factory</th>
+<th class="head">Created selector function</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><tt class="docutils literal"><span class="pre">eq_(value)</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">x</span> <span class="pre">==</span> <span class="pre">value</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">ne_(value)</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">x</span> <span class="pre">!=</span> <span class="pre">value</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">lt_(value)</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">value</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">le_(value)</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">x</span> <span class="pre">&lt;=</span> <span class="pre">value</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">ge_(value)</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">x</span> <span class="pre">&gt;=</span> <span class="pre">value</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">gt_(value)</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">x</span> <span class="pre">&gt;=</span> <span class="pre">value</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">is_(value)</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">x</span> <span class="pre">is</span> <span class="pre">value</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">contains_(value)</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">value</span> <span class="pre">in</span> <span class="pre">x</span></tt></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>Predicates are available in the <tt class="docutils literal"><span class="pre">predicates</span></tt> module of the <tt class="docutils literal"><span class="pre">asq</span></tt> package:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">asq.predicates</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+<p>So given:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">78</span><span class="p">,</span> <span class="mi">94</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">67</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>the query expression:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">35</span><span class="p">)</span><span class="o">.</span><span class="n">take_while</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">90</span><span class="p">)</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[56, 78]</span>
+</pre></div>
+</div>
+<p>could be written more succinctly rendered as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">gt_</span><span class="p">(</span><span class="mi">35</span><span class="p">))</span><span class="o">.</span><span class="n">take_while</span><span class="p">(</span><span class="n">lt_</span><span class="p">(</span><span class="mi">90</span><span class="p">))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[56, 78]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="predicate-combinator-factories">
+<h3>Predicate combinator factories<a class="headerlink" href="#predicate-combinator-factories" title="Permalink to this headline">¶</a></h3>
+<p>Some simple combinators are provided to allow the predicate factories to be
+combined to form more powerful expressions. These combinators are,</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="38%" />
+<col width="62%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Combinator factory</th>
+<th class="head">Created selector function</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><tt class="docutils literal"><span class="pre">not_(a)</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">not</span> <span class="pre">a(x)</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">and_(a,</span> <span class="pre">b)</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">a(x)</span> <span class="pre">and</span> <span class="pre">b(x)</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">or_(a,</span> <span class="pre">b)</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">a(x)</span> <span class="pre">or</span> <span class="pre">b(x)</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">xor(a,</span> <span class="pre">b)</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">a(x)</span> <span class="pre">!=</span> <span class="pre">b(x)</span></tt></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>where <tt class="docutils literal"><span class="pre">a</span></tt> and <tt class="docutils literal"><span class="pre">b</span></tt> are themselves predicates.</p>
+<p>So given:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">78</span><span class="p">,</span> <span class="mi">94</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">67</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>the query expression:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">20</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">80</span><span class="p">)</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[56, 23, 78, 56, 34, 36, 23, 76, 67]</span>
+</pre></div>
+</div>
+<p>could be expressed as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">and_</span><span class="p">(</span><span class="n">gt_</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span> <span class="n">lt_</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[56, 23, 78, 56, 34, 36, 23, 76, 67]</span>
+</pre></div>
+</div>
+<p>Although complex expressions are probably still better expressed as lambdas or
+separate functions altogether.</p>
+</div>
+<div class="section" id="using-selector-factories-for-predicates">
+<h3>Using selector factories for predicates<a class="headerlink" href="#using-selector-factories-for-predicates" title="Permalink to this headline">¶</a></h3>
+<p>A predicate is any callable that returns <tt class="xref docutils literal"><span class="pre">True</span></tt> or <tt class="xref docutils literal"><span class="pre">False</span></tt>, so any selector
+which returns <tt class="xref docutils literal"><span class="pre">True</span></tt> or <tt class="xref docutils literal"><span class="pre">False</span></tt> is by definition a predicate. This means
+that the selector factories <tt class="docutils literal"><span class="pre">k_()</span></tt>, <tt class="docutils literal"><span class="pre">a_()</span></tt> and <tt class="docutils literal"><span class="pre">m_()</span></tt> may also be used as
+predicate factories so long as they return boolean values. They may also be
+used with the predicate combinators.  For example, consider a sequence of
+<tt class="docutils literal"><span class="pre">Employee</span></tt> objects which have an <tt class="docutils literal"><span class="pre">intern</span></tt> attribute which evaluates to True
+or False.  We can filter out interns using this query:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">employees</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">not_</span><span class="p">(</span><span class="n">a_</span><span class="p">(</span><span class="s">&#39;intern&#39;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="comparers">
+<h2>Comparers<a class="headerlink" href="#comparers" title="Permalink to this headline">¶</a></h2>
+<p>Some of the query operators accept equality comparers.  Equality comparers are
+callables which can be used to determine whether two value should be considered
+equal for the purposes of a query.  For example, the <tt class="docutils literal"><span class="pre">contains()</span></tt> query
+operator accepts an optional equality comparer used for determining membership.
+To illustrate, we will use the <tt class="docutils literal"><span class="pre">insensitive_eq()</span></tt> comparer which does a
+case insensitive equality test:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">asq.comparers</span> <span class="kn">import</span> <span class="n">insensitive_eq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Matthew&#39;</span><span class="p">,</span> <span class="s">&#39;Mark&#39;</span><span class="p">,</span> <span class="s">&#39;John&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">names</span><span class="p">)</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s">&#39;MARK&#39;</span><span class="p">,</span> <span class="n">insensitive_eq</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="records">
+<h2>Records<a class="headerlink" href="#records" title="Permalink to this headline">¶</a></h2>
+<p>In all of the examples in this documentation so far, the data to be queried has
+either been represented as combinations of built-in Python types such as lists
+and dictionaries, or we have needed define specific classes to represented our
+data.  Sometimes there&#8217;s a need for a type without the syntactic clutter of say
+dictionaries, but without the overhead of creating a whole class with methods;
+you just want to bunch some data together.  The <tt class="docutils literal"><span class="pre">Record</span></tt> type provided by
+<tt class="docutils literal"><span class="pre">asq</span></tt> fulfills this need.  A convenience function called <tt class="docutils literal"><span class="pre">new()</span></tt> can be
+used to concisely create Records.  To use new, just pass in named arguments to
+define the Record properties:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">product</span> <span class="o">=</span> <span class="n">new</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">5723</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;Mouse&quot;</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="mi">33</span><span class="p">,</span> <span class="n">total_revenue</span><span class="o">=</span><span class="mi">23212</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product</span>
+<span class="go">Record(id=5723, price=33, total_revenue=23212, name=&#39;Mouse&#39;)</span>
+</pre></div>
+</div>
+<p>And retrieve properties using regular Python attribute syntax:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">product</span><span class="o">.</span><span class="n">price</span>
+<span class="go">33</span>
+</pre></div>
+</div>
+<p>This can be useful when we want to carry several derived values through a query
+such as in this example where we create Records containing the full names and
+highest score of students, we then sort the records by the high score:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pupils</span> <span class="kn">import</span> <span class="n">students</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">students</span>
+<span class="go">[{&#39;lastname&#39;: &#39;Blogs&#39;, &#39;firstname&#39;: &#39;Joe&#39;, &#39;scores&#39;: [56, 23, 21, 89]},</span>
+<span class="go"> {&#39;lastname&#39;: &#39;Doe&#39;, &#39;firstname&#39;: &#39;John&#39;, &#39;scores&#39;: [34, 12, 92, 93]},</span>
+<span class="go"> {&#39;lastname&#39;: &#39;Doe&#39;, &#39;firstname&#39;: &#39;Jane&#39;, &#39;scores&#39;: [33, 94, 91, 13]},</span>
+<span class="go"> {&#39;lastname&#39;: &#39;Nordmann&#39;, &#39;firstname&#39;: &#39;Ola&#39;, &#39;scores&#39;: [98, 23, 98, 87]},</span>
+<span class="go"> {&#39;lastname&#39;: &#39;Nordmann&#39;, &#39;firstname&#39;: &#39;Kari&#39;, &#39;scores&#39;: [86, 37, 88, 87]},</span>
+<span class="go"> {&#39;lastname&#39;: &#39;Rossi&#39;, &#39;firstname&#39;: &#39;Mario&#39;, &#39;scores&#39;: [37, 95, 45, 18]}]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">students</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">new</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;{firstname} {lastname}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">s</span><span class="p">),</span>
+<span class="gp">... </span>                                     <span class="n">high_score</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s">&#39;scores&#39;</span><span class="p">])))</span> \
+<span class="gp">... </span>               <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">a_</span><span class="p">(</span><span class="s">&#39;high_score&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[Record(high_score=88, name=&#39;Kari Nordmann&#39;),</span>
+<span class="go"> Record(high_score=89, name=&#39;Joe Blogs&#39;),</span>
+<span class="go"> Record(high_score=93, name=&#39;John Doe&#39;),</span>
+<span class="go"> Record(high_score=94, name=&#39;Jane Doe&#39;),</span>
+<span class="go"> Record(high_score=95, name=&#39;Mario Rossi&#39;),</span>
+<span class="go"> Record(high_score=98, name=&#39;Ola Nordmann&#39;)]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="debugging">
+<h2>Debugging<a class="headerlink" href="#debugging" title="Permalink to this headline">¶</a></h2>
+<p>With potentially so much deferred execution occurring, debugging <tt class="docutils literal"><span class="pre">asq</span></tt> query
+expressions using tools such as debuggers can be challenging. Furthermore, since
+queries are expressions use of statements such as Python 2 <tt class="docutils literal"><span class="pre">print</span></tt> can be
+awkward.</p>
+<p>To ease debugging, <tt class="docutils literal"><span class="pre">asq</span></tt> provides a logging facility which can be used to
+display intermediate results with an optional ability for force full, rather
+than lazy, evaluation of sequences.</p>
+<p>To demonstrate, let&#8217;s start with a bug-ridden implementation of Fizz-Buzz
+implemented with <tt class="docutils literal"><span class="pre">asq</span></tt>. Fizz-Buzz is a game where the numbers 1 to 100 are
+read aloud but for numbers divisible by three &#8220;Fizz&#8221; is shouted, and for numbers
+divisible by five, &#8220;Buzz&#8221; is shouted.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">asq.initiators</span> <span class="kn">import</span> <span class="n">integers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">integers</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s">&quot;Fizz&quot;</span> <span class="k">if</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span> \
+<span class="gp">... </span>                <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s">&quot;Buzz&quot;</span> <span class="k">if</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>At a glance this looks like it should work, but when run we get:</p>
+<div class="highlight-python"><pre>Traceback (most recent call last):
+  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+  File "asq/queryables.py", line 1910, in to_list
+    lst = list(self)
+  File "&lt;stdin&gt;", line 1, in &lt;lambda&gt;
+TypeError: not all arguments converted during string formatting</pre>
+</div>
+<p>To investigate further it would be useful to examine the intermediate results.
+We can do this using the <tt class="docutils literal"><span class="pre">log()</span></tt> query operator, which accepts any logger
+supporting a <tt class="docutils literal"><span class="pre">debug(message)</span></tt> method. We can get just such a logger from the
+Python standard library <tt class="docutils literal"><span class="pre">logging</span></tt> module:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;clog&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clog</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>which creates a console logger we have called <tt class="docutils literal"><span class="pre">clog</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">asq.initiators</span> <span class="kn">import</span> <span class="n">integers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">integers</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> \
+<span class="gp">... </span> <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s">&quot;Fizz&quot;</span> <span class="k">if</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">clog</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;Fizz select&quot;</span><span class="p">)</span><span class="o">.</span> \
+<span class="gp">... </span> <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s">&quot;Buzz&quot;</span> <span class="k">if</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">DEBUG:clog:Fizz select : BEGIN (DEFERRED)</span>
+<span class="go">DEBUG:clog:Fizz select : [0] yields 1</span>
+<span class="go">DEBUG:clog:Fizz select : [1] yields 2</span>
+<span class="go">DEBUG:clog:Fizz select : [2] yields &#39;Fizz&#39;</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+  File <span class="nb">&quot;asq/queryables.py&quot;</span>, line <span class="m">1910</span>, in <span class="n">to_list</span>
+    <span class="n">lst</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;lambda&gt;</span>
+<span class="gr">TypeError</span>: <span class="n">not all arguments converted during string formatting</span>
+</pre></div>
+</div>
+<p>so we can see the the first select operator yields 1, 2, &#8216;Fizz&#8217; before the
+failure. Now it&#8217;s perhaps more obvious that when x in the second lambda is equal
+to &#8216;Fizz&#8217; the <tt class="docutils literal"><span class="pre">%</span></tt> operator will be operating on a string on its left-hand side
+and so the <tt class="docutils literal"><span class="pre">`%</span></tt> will perform string interpolation rather than modulus. This is
+the cause of the error we see.</p>
+<p>We can fix this by not applying the modulus operator in the case that x is
+&#8216;Fizz&#8217;:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">integers</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s">&quot;Fizz&quot;</span> <span class="k">if</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">clog</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;Fizz select&quot;</span><span class="p">)</span> \
+<span class="go">                    .select(lambda x: &quot;Buzz&quot; if x != &quot;Fizz&quot; and x % 5 == 0 else x).to_list()</span>
+<span class="go">DEBUG:clog:Fizz select : BEGIN (DEFERRED)</span>
+<span class="go">DEBUG:clog:Fizz select : [0] yields 1</span>
+<span class="go">DEBUG:clog:Fizz select : [1] yields 2</span>
+<span class="go">DEBUG:clog:Fizz select : [2] yields &#39;Fizz&#39;</span>
+<span class="go">DEBUG:clog:Fizz select : [3] yields 4</span>
+<span class="go">DEBUG:clog:Fizz select : [4] yields 5</span>
+<span class="go">DEBUG:clog:Fizz select : [5] yields &#39;Fizz&#39;</span>
+<span class="go">DEBUG:clog:Fizz select : [6] yields 7</span>
+<span class="go">DEBUG:clog:Fizz select : [7] yields 8</span>
+<span class="go">DEBUG:clog:Fizz select : [8] yields &#39;Fizz&#39;</span>
+<span class="go">DEBUG:clog:Fizz select : [9] yields 10</span>
+<span class="go">DEBUG:clog:Fizz select : [10] yields 11</span>
+<span class="go">DEBUG:clog:Fizz select : [11] yields &#39;Fizz&#39;</span>
+<span class="go">DEBUG:clog:Fizz select : [12] yields 13</span>
+<span class="go">DEBUG:clog:Fizz select : [13] yields 14</span>
+<span class="go">DEBUG:clog:Fizz select : [14] yields &#39;Fizz&#39;</span>
+<span class="go">DEBUG:clog:Fizz select : [15] yields 16</span>
+<span class="go">DEBUG:clog:Fizz select : [16] yields 17</span>
+<span class="gp">...</span>
+<span class="go">DEBUG:clog2:Fizz select : [98] yields &#39;Fizz&#39;</span>
+<span class="go">DEBUG:clog2:Fizz select : [99] yields 100</span>
+<span class="go">DEBUG:clog2:Fizz select : END (DEFERRED)</span>
+<span class="go">[1, 2, &#39;Fizz&#39;, 4, &#39;Buzz&#39;, &#39;Fizz&#39;, 7, 8, &#39;Fizz&#39;, &#39;Buzz&#39;, 11, &#39;Fizz&#39;, 13, 14,</span>
+<span class="go"> &#39;Fizz&#39;, 16, 17, &#39;Fizz&#39;, 19, &#39;Buzz&#39;, &#39;Fizz&#39;, 22, 23, &#39;Fizz&#39;, &#39;Buzz&#39;, 26,</span>
+<span class="go"> &#39;Fizz&#39;, 28, 29, &#39;Fizz&#39;, 31, 32, &#39;Fizz&#39;, 34, &#39;Buzz&#39;, &#39;Fizz&#39;, 37, 38, &#39;Fizz&#39;,</span>
+<span class="go"> &#39;Buzz&#39;, 41, &#39;Fizz&#39;, 43, 44, &#39;Fizz&#39;, 46, 47, &#39;Fizz&#39;, 49, &#39;Buzz&#39;, &#39;Fizz&#39;, 52,</span>
+<span class="go"> 53, &#39;Fizz&#39;, &#39;Buzz&#39;, 56, &#39;Fizz&#39;, 58, 59, &#39;Fizz&#39;, 61, 62, &#39;Fizz&#39;, 64, &#39;Buzz&#39;,</span>
+<span class="go"> &#39;Fizz&#39;, 67, 68, &#39;Fizz&#39;, &#39;Buzz&#39;, 71, &#39;Fizz&#39;, 73, 74, &#39;Fizz&#39;, 76, 77, &#39;Fizz&#39;,</span>
+<span class="go"> 79, &#39;Buzz&#39;, &#39;Fizz&#39;, 82, 83, &#39;Fizz&#39;, &#39;Buzz&#39;, 86, &#39;Fizz&#39;, 88, 89, &#39;Fizz&#39;, 91,</span>
+<span class="go"> 92, &#39;Fizz&#39;, 94, &#39;Buzz&#39;, &#39;Fizz&#39;, 97, 98, &#39;Fizz&#39;, &#39;Buzz&#39;]</span>
+</pre></div>
+</div>
+<p>That problem is solved, but inspection of the output shows that our query
+expression produces incorrect results for those numbers which are multiples of
+both 3 and 5, such as 15, for which we should be returning &#8216;FizzBuzz&#8217;. For the
+sake of completeness, let&#8217;s modify the expression to deal with this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">integers</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s">&quot;FizzBuzz&quot;</span> <span class="k">if</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">15</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span> \
+<span class="go">                    .select(lambda x: &quot;Fizz&quot; if x != &quot;FizzBuzz&quot; and x % 3 == 0 else x) \</span>
+<span class="go">                    .select(lambda x: &quot;Buzz&quot; if x != &quot;FizzBuzz&quot; and x != &quot;Fizz&quot; and x % 5 == 0 else x).to_list()</span>
+<span class="go">[1, 2, &#39;Fizz&#39;, 4, &#39;Buzz&#39;, &#39;Fizz&#39;, 7, 8, &#39;Fizz&#39;, &#39;Buzz&#39;, 11, &#39;Fizz&#39;, 13, 14,</span>
+<span class="go"> &#39;FizzBuzz&#39;, 16, 17, &#39;Fizz&#39;, 19, &#39;Buzz&#39;, &#39;Fizz&#39;, 22, 23, &#39;Fizz&#39;, &#39;Buzz&#39;, 26,</span>
+<span class="go"> &#39;Fizz&#39;, 28, 29, &#39;FizzBuzz&#39;, 31, 32, &#39;Fizz&#39;, 34, &#39;Buzz&#39;, &#39;Fizz&#39;, 37, 38,</span>
+<span class="go"> &#39;Fizz&#39;, &#39;Buzz&#39;, 41, &#39;Fizz&#39;, 43, 44, &#39;FizzBuzz&#39;, 46, 47, &#39;Fizz&#39;, 49, &#39;Buzz&#39;,</span>
+<span class="go"> &#39;Fizz&#39;, 52, 53, &#39;Fizz&#39;, &#39;Buzz&#39;, 56, &#39;Fizz&#39;, 58, 59, &#39;FizzBuzz&#39;, 61, 62,</span>
+<span class="go"> &#39;Fizz&#39;, 64, &#39;Buzz&#39;, &#39;Fizz&#39;, 67, 68, &#39;Fizz&#39;, &#39;Buzz&#39;, 71, &#39;Fizz&#39;, 73, 74,</span>
+<span class="go"> &#39;FizzBuzz&#39;, 76, 77, &#39;Fizz&#39;, 79, &#39;Buzz&#39;, &#39;Fizz&#39;, 82, 83, &#39;Fizz&#39;, &#39;Buzz&#39;, 86,</span>
+<span class="go"> &#39;Fizz&#39;, 88, 89, &#39;FizzBuzz&#39;, 91, 92, &#39;Fizz&#39;, 94, &#39;Buzz&#39;, &#39;Fizz&#39;, 97, 98,</span>
+<span class="go"> &#39;Fizz&#39;, &#39;Buzz&#39;]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="extending-asq">
+<h2>Extending <tt class="docutils literal"><span class="pre">asq</span></tt><a class="headerlink" href="#extending-asq" title="Permalink to this headline">¶</a></h2>
+<div class="sidebar">
+<p class="first sidebar-title">For .NET developers</p>
+<p class="last">The &#64;extend decorator described here performs the same role as C# extension
+methods to IEnumerable play in Microsoft&#8217;s LINQ.</p>
+</div>
+<p>The fluent interface of <tt class="docutils literal"><span class="pre">asq</span></tt> works by chaining method calls on Queryable
+types, so to extend <tt class="docutils literal"><span class="pre">asq</span></tt> with new query operators must be able to add
+methods to Queryable. New methods added in this way must have a particular
+structure in order to be usable in the middle of a query chain.</p>
+<p>To define a new query operator, use the &#64;extend function decorator from the
+<tt class="docutils literal"><span class="pre">asq.extension</span></tt> package to decorator a module scope function. To illustrate,
+let&#8217;s add a new operator which adds a separating item between existing items:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@extend</span><span class="p">(</span><span class="n">Queryable</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">separate_with</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">separator</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Insert a separator between items.</span>
+
+<span class="sd">    Note: This method uses deferred execution.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        separator: The separating element to be inserted between each source</span>
+<span class="sd">            element.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A Queryable over the separated sequence.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c"># Validate the arguments.  It is important to validate the arguments</span>
+    <span class="c"># eagerly, when the operator called, rather than when the result is</span>
+    <span class="c"># evaluated to ease debugging.</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">closed</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Attempt to call separate_with() on a closed Queryable.&quot;</span><span class="p">)</span>
+
+    <span class="c"># In order to get deferred execution (lazy evaluation) we need to define</span>
+    <span class="c"># a generator. This generator is also a closure over the parameters to</span>
+    <span class="c"># separate_with, namely &#39;self&#39; and &#39;separator&#39;.</span>
+    <span class="k">def</span> <span class="nf">generator</span><span class="p">():</span>
+        <span class="c"># Create an iterator over the source sequence - self is a Queryable</span>
+        <span class="c"># which is iterable.</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c"># Attempt to yield the first element, which may or may not exist;</span>
+        <span class="c"># next() will raise StopIteration if it does not, so we exit.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="nb">next</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c"># Alternately yield a separator and the next element for all</span>
+        <span class="c"># remaining elements in the source sequence.</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">i</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">separator</span>
+            <span class="k">yield</span> <span class="n">item</span>
+
+    <span class="c"># Create a new Queryable from the generator, by calling the _create()</span>
+    <span class="c"># factory function, rather than by calling the Queryable constructor</span>
+    <span class="c"># directly.  This ensures that the correct subclass of Queryable is</span>
+    <span class="c"># created.</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create</span><span class="p">(</span><span class="n">generator</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>The &#64;extend decorator installs the new operator so it may be used immediately:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">query</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">separate_with</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>which gives:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">81</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/asq_logo_150.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">asq</span></tt> Introduction</a></li>
+<li><a class="reference internal" href="#installing-asq">Installing <tt class="docutils literal"><span class="pre">asq</span></tt></a></li>
+<li><a class="reference internal" href="#diving-in">Diving in</a><ul>
+<li><a class="reference internal" href="#initiators">Initiators</a></li>
+<li><a class="reference internal" href="#when-is-the-query-evaluated">When is the query evaluated?</a></li>
+<li><a class="reference internal" href="#query-chaining">Query chaining</a></li>
+<li><a class="reference internal" href="#query-nesting">Query nesting</a></li>
+<li><a class="reference internal" href="#selectors">Selectors</a><ul>
+<li><a class="reference internal" href="#lambdas">Lambdas</a></li>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#unbound-methods">Unbound methods</a></li>
+<li><a class="reference internal" href="#bound-methods">Bound methods</a></li>
+<li><a class="reference internal" href="#selector-factories">Selector factories</a><ul>
+<li><a class="reference internal" href="#key-selector-factory">Key selector factory</a></li>
+<li><a class="reference internal" href="#attribute-selector-factory">Attribute selector factory</a></li>
+<li><a class="reference internal" href="#method-selector-factory">Method selector factory</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#default-selectors-and-the-identity-selector">Default selectors and the identity selector</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#predicates">Predicates</a><ul>
+<li><a class="reference internal" href="#id3">Lambdas</a></li>
+<li><a class="reference internal" href="#id4">Functions</a></li>
+<li><a class="reference internal" href="#id5">Unbound methods</a></li>
+<li><a class="reference internal" href="#id6">Bound methods</a></li>
+<li><a class="reference internal" href="#predicate-factories">Predicate factories</a></li>
+<li><a class="reference internal" href="#predicate-combinator-factories">Predicate combinator factories</a></li>
+<li><a class="reference internal" href="#using-selector-factories-for-predicates">Using selector factories for predicates</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#comparers">Comparers</a></li>
+<li><a class="reference internal" href="#records">Records</a></li>
+<li><a class="reference internal" href="#debugging">Debugging</a></li>
+<li><a class="reference internal" href="#extending-asq">Extending <tt class="docutils literal"><span class="pre">asq</span></tt></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="front_matter/front_matter.html"
+                        title="previous chapter">Copyright</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="reference/reference.html"
+                        title="next chapter">API Reference</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/narrative.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="reference/reference.html" title="API Reference"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="front_matter/front_matter.html" title="Copyright"
+             >previous</a> |</li>
+        <li><a href="index.html">asq v1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Robert Smallshire.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

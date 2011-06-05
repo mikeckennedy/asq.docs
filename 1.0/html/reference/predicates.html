@@ -1,0 +1,546 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>asq.predicates &mdash; asq v1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="asq v1.0 documentation" href="../index.html" />
+    <link rel="up" title="API Reference" href="reference.html" />
+    <link rel="next" title="asq.record" href="record.html" />
+    <link rel="prev" title="asq.selectors" href="selectors.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="record.html" title="asq.record"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="selectors.html" title="asq.selectors"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">asq v1.0 documentation</a> &raquo;</li>
+          <li><a href="reference.html" accesskey="U">API Reference</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-asq.predicates">
+<span id="asq-predicates"></span><h1><tt class="docutils literal"><span class="pre">asq.predicates</span></tt><a class="headerlink" href="#module-asq.predicates" title="Permalink to this headline">¶</a></h1>
+<p>Predicate function factories</p>
+<p>Predicates are boolean functions which return True or False.</p>
+<div class="section" id="predicate-factories">
+<h2>Predicate factories<a class="headerlink" href="#predicate-factories" title="Permalink to this headline">¶</a></h2>
+<p>The predicate factories partially apply the binary comparison operators by
+providing the right-hand-side argument.  The result is a unary function the
+single argument to which is the left-hand-side of the comparison operator.</p>
+<p>For example. the <tt class="docutils literal"><span class="pre">lt_(rhs)</span></tt> predicate factory returns:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">lambda</span> <span class="n">lhs</span><span class="p">:</span> <span class="n">lhs</span> <span class="o">&lt;</span> <span class="n">rhs</span>
+</pre></div>
+</div>
+<p>where <tt class="docutils literal"><span class="pre">rhs</span></tt> is provided when the predicate is created but <tt class="docutils literal"><span class="pre">lhs</span></tt> takes the
+value passed to the unary predicate.</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><a class="reference internal" href="#asq.predicates.contains_" title="asq.predicates.contains_"><tt class="xref py py-obj docutils literal"><span class="pre">contains_</span></tt></a></td>
+<td>Create a unary predicate which tests for membership if its argument.</td>
+</tr>
+<tr><td><a class="reference internal" href="#asq.predicates.eq_" title="asq.predicates.eq_"><tt class="xref py py-obj docutils literal"><span class="pre">eq_</span></tt></a></td>
+<td>Create a predicate which tests its argument for equality with a value.</td>
+</tr>
+<tr><td><a class="reference internal" href="#asq.predicates.is_" title="asq.predicates.is_"><tt class="xref py py-obj docutils literal"><span class="pre">is_</span></tt></a></td>
+<td>Create a predicate which performs an identity comparison of its argument with a value.</td>
+</tr>
+<tr><td><a class="reference internal" href="#asq.predicates.ge_" title="asq.predicates.ge_"><tt class="xref py py-obj docutils literal"><span class="pre">ge_</span></tt></a></td>
+<td>Create a predicate which performs a greater-than-or-equal comparison of its argument with a value.</td>
+</tr>
+<tr><td><a class="reference internal" href="#asq.predicates.gt_" title="asq.predicates.gt_"><tt class="xref py py-obj docutils literal"><span class="pre">gt_</span></tt></a></td>
+<td>Create a predicate which performs a greater-than comparison of its argument with a value.</td>
+</tr>
+<tr><td><a class="reference internal" href="#asq.predicates.le_" title="asq.predicates.le_"><tt class="xref py py-obj docutils literal"><span class="pre">le_</span></tt></a></td>
+<td>Create a predicate which performs a less-than-or-equal comparison of its argument with a value.</td>
+</tr>
+<tr><td><a class="reference internal" href="#asq.predicates.lt_" title="asq.predicates.lt_"><tt class="xref py py-obj docutils literal"><span class="pre">lt_</span></tt></a></td>
+<td>Create a predicate which performs a less-than comparison of its argument with a value.</td>
+</tr>
+<tr><td><a class="reference internal" href="#asq.predicates.ne_" title="asq.predicates.ne_"><tt class="xref py py-obj docutils literal"><span class="pre">ne_</span></tt></a></td>
+<td>Create a predicate which tests its argument for inequality with a value.</td>
+</tr>
+</tbody>
+</table>
+<dl class="function">
+<dt id="asq.predicates.contains_">
+<tt class="descclassname">asq.predicates.</tt><tt class="descname">contains_</tt><big>(</big><em>lhs</em><big>)</big><a class="headerlink" href="#asq.predicates.contains_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a unary predicate which tests for membership if its argument.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lhs</strong> &#8211; (left-hand-side) The value to test for membership for in the
+predicate argument.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A unary predicate function which determines whether its single
+arguments (lhs) contains lhs.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>Filter for specific words containing &#8216;ei&#8217;:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;banana&#39;</span><span class="p">,</span> <span class="s">&#39;receive&#39;</span><span class="p">,</span> <span class="s">&#39;believe&#39;</span><span class="p">,</span> <span class="s">&#39;ticket&#39;</span><span class="p">,</span> <span class="s">&#39;deceive&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">words</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">contains_</span><span class="p">(</span><span class="s">&#39;ei&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[&#39;receive&#39;, &#39;deceive&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="asq.predicates.eq_">
+<tt class="descclassname">asq.predicates.</tt><tt class="descname">eq_</tt><big>(</big><em>rhs</em><big>)</big><a class="headerlink" href="#asq.predicates.eq_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a predicate which tests its argument for equality with a value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rhs</strong> &#8211; (right-hand-side) The value with which the left-hand-side element
+will be compared for equality.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A unary predicate function which compares its single argument (lhs)
+for equality with rhs.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>Filter for those numbers equal to five:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">89</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">43</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">eq_</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[5, 5]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="asq.predicates.is_">
+<tt class="descclassname">asq.predicates.</tt><tt class="descname">is_</tt><big>(</big><em>rhs</em><big>)</big><a class="headerlink" href="#asq.predicates.is_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a predicate which performs an identity comparison of its
+argument with a value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rhs</strong> &#8211; (right-hand-side) The value against which the identity test will</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A unary predicate function which determines whether its single
+arguments (lhs) has the same identity - that is, is the same object -
+as rhs.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>Filter for a specific object by identity:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sentinel</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sentinel</span>
+<span class="go">&lt;object object at 0x0000000002ED8040&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">objects</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Dinosaur&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">sentinel</span><span class="p">,</span> <span class="mf">89.3</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">is_</span><span class="p">(</span><span class="n">sentinel</span><span class="p">))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[&lt;object object at 0x0000000002ED8040&gt;]</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="asq.predicates.ge_">
+<tt class="descclassname">asq.predicates.</tt><tt class="descname">ge_</tt><big>(</big><em>rhs</em><big>)</big><a class="headerlink" href="#asq.predicates.ge_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a predicate which performs a greater-than-or-equal comparison of
+its argument with a value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rhs</strong> &#8211; (right-hand-side) The value against which the greater-than-or-
+equal test will be performed.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A unary predicate function which determines whether its single
+argument (lhs) is greater-than rhs.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>Filter for those numbers greater-than-or-equal to 43:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">89</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">43</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">ge_</span><span class="p">(</span><span class="mi">43</span><span class="p">))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[89, 67, 43]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="asq.predicates.gt_">
+<tt class="descclassname">asq.predicates.</tt><tt class="descname">gt_</tt><big>(</big><em>rhs</em><big>)</big><a class="headerlink" href="#asq.predicates.gt_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a predicate which performs a greater-than comparison of its
+argument with a value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rhs</strong> &#8211; (right-hand-side) The value against which the greater-than test</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A unary predicate function which determines whether its single
+argument (lhs) is less-than-or-equal to rhs.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>Filter for those numbers greater-than 43:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">89</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">43</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">gt_</span><span class="p">(</span><span class="mi">43</span><span class="p">))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[89, 67]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="asq.predicates.le_">
+<tt class="descclassname">asq.predicates.</tt><tt class="descname">le_</tt><big>(</big><em>rhs</em><big>)</big><a class="headerlink" href="#asq.predicates.le_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a predicate which performs a less-than-or-equal comparison of its
+argument with a value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rhs</strong> &#8211; (right-hand-side) The value against which the less-than-or-equal
+test will be performed.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A unary predicate function which determines whether its single
+argument (lhs) is less-than-or-equal to rhs.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>Filter for those numbers less-than-or-equal to 43:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">89</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">43</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">le_</span><span class="p">(</span><span class="mi">43</span><span class="p">))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[5, 9, 12, 5, 34, 2, 43]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="asq.predicates.lt_">
+<tt class="descclassname">asq.predicates.</tt><tt class="descname">lt_</tt><big>(</big><em>rhs</em><big>)</big><a class="headerlink" href="#asq.predicates.lt_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a predicate which performs a less-than comparison of its argument
+with a value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rhs</strong> &#8211; (right-hand-side) The value against which the less-than test will
+be performed.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A unary predicate function which determines whether its single
+argument (lhs) is less-than rhs.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>Filter for those numbers less-than-or-equal to 43:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">89</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">43</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lt_</span><span class="p">(</span><span class="mi">43</span><span class="p">))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[5, 9, 12, 5, 34, 2]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="asq.predicates.ne_">
+<tt class="descclassname">asq.predicates.</tt><tt class="descname">ne_</tt><big>(</big><em>rhs</em><big>)</big><a class="headerlink" href="#asq.predicates.ne_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a predicate which tests its argument for inequality with a value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rhs</strong> &#8211; (right-hand-side) The value with which the left-hand-side element
+will be compared for inequality.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A unary predicate function which compares its single argument (lhs)
+for inequality with rhs.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>Filter for those numbers not equal to 5:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">89</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">43</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">ne_</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[9, 12, 89, 34, 2, 67, 43]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div></blockquote>
+</div>
+<div class="section" id="predicate-combinators">
+<h2>Predicate combinators<a class="headerlink" href="#predicate-combinators" title="Permalink to this headline">¶</a></h2>
+<p>Predicate combinators allow the predicate factories to be modified and combined
+in a concise way. For example, we can write:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">or_</span><span class="p">(</span><span class="n">lt_</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">gt_</span><span class="p">(</span><span class="mi">37</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>which will produce a predicate equivalent to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">lambda</span> <span class="n">lhs</span><span class="p">:</span> <span class="n">lhs</span> <span class="o">&lt;</span> <span class="mi">5</span> <span class="ow">or</span> <span class="n">lhs</span> <span class="o">&gt;</span> <span class="mi">37</span>
+</pre></div>
+</div>
+<p>which can be applied to each element of a sequence to test whether the element
+is outside the range 5 to 37.</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><a class="reference internal" href="#asq.predicates.and_" title="asq.predicates.and_"><tt class="xref py py-obj docutils literal"><span class="pre">and_</span></tt></a></td>
+<td>A predicate combinator which produces the a new predicate which is the logical conjunction of two existing unary predicates.</td>
+</tr>
+<tr><td><a class="reference internal" href="#asq.predicates.not_" title="asq.predicates.not_"><tt class="xref py py-obj docutils literal"><span class="pre">not_</span></tt></a></td>
+<td>A predicate combinator which negates produces an inverted predicate.</td>
+</tr>
+<tr><td><a class="reference internal" href="#asq.predicates.or_" title="asq.predicates.or_"><tt class="xref py py-obj docutils literal"><span class="pre">or_</span></tt></a></td>
+<td>A predicate combinator which produces the a new predicate which is the logical disjunction of two existing unary predicates.</td>
+</tr>
+<tr><td><a class="reference internal" href="#asq.predicates.xor_" title="asq.predicates.xor_"><tt class="xref py py-obj docutils literal"><span class="pre">xor_</span></tt></a></td>
+<td>A predicate combinator which produces the a new predicate which is the logical exclusive disjunction of two existing unary predicates.</td>
+</tr>
+</tbody>
+</table>
+<dl class="function">
+<dt id="asq.predicates.and_">
+<tt class="descclassname">asq.predicates.</tt><tt class="descname">and_</tt><big>(</big><em>predicate1</em>, <em>predicate2</em><big>)</big><a class="headerlink" href="#asq.predicates.and_" title="Permalink to this definition">¶</a></dt>
+<dd><p>A predicate combinator which produces the a new predicate which is the
+logical conjunction of two existing unary predicates.</p>
+<p>The predicate returned by this combinator returns True when both of the two
+supplied predicates return True, otherwise it returns False.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>predicate1</strong> &#8211; A unary predicate function.</li>
+<li><strong>predicate2</strong> &#8211; A unary predicate function.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A unary predicate function which is the logical conjunction of
+predicate1 and predicate2.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>..rubric:: Example</p>
+<p>Filter a list for all the words which both start with &#8216;a&#8217; and end &#8216;t&#8217;:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;alphabet&#39;</span><span class="p">,</span> <span class="s">&#39;train&#39;</span><span class="p">,</span> <span class="s">&#39;apple&#39;</span><span class="p">,</span> <span class="s">&#39;aghast&#39;</span><span class="p">,</span> <span class="s">&#39;tent&#39;</span><span class="p">,</span> <span class="s">&#39;alarm&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">words</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">and_</span><span class="p">(</span><span class="n">m_</span><span class="p">(</span><span class="s">&#39;startswith&#39;</span><span class="p">,</span> <span class="s">&#39;a&#39;</span><span class="p">),</span> <span class="n">m_</span><span class="p">(</span><span class="s">&#39;endswith&#39;</span><span class="p">,</span> <span class="s">&#39;t&#39;</span><span class="p">)))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[&#39;alphabet&#39;, &#39;aghast&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="asq.predicates.not_">
+<tt class="descclassname">asq.predicates.</tt><tt class="descname">not_</tt><big>(</big><em>predicate</em><big>)</big><a class="headerlink" href="#asq.predicates.not_" title="Permalink to this definition">¶</a></dt>
+<dd><p>A predicate combinator which negates produces an inverted predicate.</p>
+<p>The predicate returned by this combinator is the logical inverse of the
+supplied combinator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>predicate</strong> &#8211; A unary predicate function to be inverted.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A unary predicate function which is the logical inverse of pred.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>Filter a list for all the word which do not contain a specific sentinel
+object:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sentinel</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">objects</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Dinosaur&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">sentinel</span><span class="p">,</span> <span class="mf">89.3</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">not_</span><span class="p">(</span><span class="n">is_</span><span class="p">(</span><span class="n">sentinel</span><span class="p">)))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[&#39;Dinosaur&#39;, 5, 89.3]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="asq.predicates.or_">
+<tt class="descclassname">asq.predicates.</tt><tt class="descname">or_</tt><big>(</big><em>predicate1</em>, <em>predicate2</em><big>)</big><a class="headerlink" href="#asq.predicates.or_" title="Permalink to this definition">¶</a></dt>
+<dd><p>A predicate combinator which produces the a new predicate which is the
+logical disjunction of two existing unary predicates.</p>
+<p>The predicate returned by this combinator returns True when either or both
+of the two supplied predicates return True, otherwise it returns False.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>predicate1</strong> &#8211; A unary predicate function.</li>
+<li><strong>predicate2</strong> &#8211; A unary predicate function.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A unary predicate function which is the logical disjunction of
+predicate1 and predicate2.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>Filter a list for all words which either start with &#8216;a&#8217; or end with &#8216;t&#8217;:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;alphabet&#39;</span><span class="p">,</span> <span class="s">&#39;train&#39;</span><span class="p">,</span> <span class="s">&#39;apple&#39;</span><span class="p">,</span> <span class="s">&#39;aghast&#39;</span><span class="p">,</span> <span class="s">&#39;tent&#39;</span><span class="p">,</span> <span class="s">&#39;alarm&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">words</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">or_</span><span class="p">(</span><span class="n">m_</span><span class="p">(</span><span class="s">&#39;startswith&#39;</span><span class="p">,</span> <span class="s">&#39;a&#39;</span><span class="p">),</span> <span class="n">m_</span><span class="p">(</span><span class="s">&#39;endswith&#39;</span><span class="p">,</span> <span class="s">&#39;t&#39;</span><span class="p">)))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[&#39;alphabet&#39;, &#39;apple&#39;, &#39;aghast&#39;, &#39;tent&#39;, &#39;alarm&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="asq.predicates.xor_">
+<tt class="descclassname">asq.predicates.</tt><tt class="descname">xor_</tt><big>(</big><em>predicate1</em>, <em>predicate2</em><big>)</big><a class="headerlink" href="#asq.predicates.xor_" title="Permalink to this definition">¶</a></dt>
+<dd><p>A predicate combinator which produces the a new predicate which is the
+logical exclusive disjunction of two existing unary predicates.</p>
+<p>The predicate returned by this combinator returns True when the two
+supplied predicates return the different values, otherwise it returns
+False.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>predicate1</strong> &#8211; A unary predicate function.</li>
+<li><strong>predicate2</strong> &#8211; A unary predicate function.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A unary predicate function which is the logical exclusive disjunction
+of predicate1 and predicate2.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>Filter a list for all words which either start with &#8216;a&#8217; or end with &#8216;t&#8217;
+but not both:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;alphabet&#39;</span><span class="p">,</span> <span class="s">&#39;train&#39;</span><span class="p">,</span> <span class="s">&#39;apple&#39;</span><span class="p">,</span> <span class="s">&#39;aghast&#39;</span><span class="p">,</span> <span class="s">&#39;tent&#39;</span><span class="p">,</span> <span class="s">&#39;alarm&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">words</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">xor_</span><span class="p">(</span><span class="n">m_</span><span class="p">(</span><span class="s">&#39;startswith&#39;</span><span class="p">,</span> <span class="s">&#39;a&#39;</span><span class="p">),</span> <span class="n">m_</span><span class="p">(</span><span class="s">&#39;endswith&#39;</span><span class="p">,</span> <span class="s">&#39;t&#39;</span><span class="p">)))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[&#39;apple&#39;, &#39;tent&#39;, &#39;alarm&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/asq_logo_150.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">asq.predicates</span></tt></a><ul>
+<li><a class="reference internal" href="#predicate-factories">Predicate factories</a></li>
+<li><a class="reference internal" href="#predicate-combinators">Predicate combinators</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="selectors.html"
+                        title="previous chapter"><tt class="docutils literal"><span class="pre">asq.selectors</span></tt></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="record.html"
+                        title="next chapter"><tt class="docutils literal docutils literal"><span class="pre">asq.record</span></tt></a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/reference/predicates.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="record.html" title="asq.record"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="selectors.html" title="asq.selectors"
+             >previous</a> |</li>
+        <li><a href="../index.html">asq v1.0 documentation</a> &raquo;</li>
+          <li><a href="reference.html" >API Reference</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Robert Smallshire.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>
