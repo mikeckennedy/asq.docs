@@ -6,13 +6,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Queryables &mdash; asq v0.9 documentation</title>
+    <title>asq.queryables &mdash; asq v1.0 documentation</title>
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.9',
+        VERSION:     '1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -21,10 +21,10 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="asq v0.9 documentation" href="../index.html" />
+    <link rel="top" title="asq v1.0 documentation" href="../index.html" />
     <link rel="up" title="API Reference" href="reference.html" />
-    <link rel="next" title="Selectors" href="selectors.html" />
-    <link rel="prev" title="Initiators" href="initiators.html" /> 
+    <link rel="next" title="asq.selectors" href="selectors.html" />
+    <link rel="prev" title="asq.initiators" href="initiators.html" /> 
   </head>
   <body>
     <div class="related">
@@ -37,12 +37,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="selectors.html" title="Selectors"
+          <a href="selectors.html" title="asq.selectors"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="initiators.html" title="Initiators"
+          <a href="initiators.html" title="asq.initiators"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">asq v0.9 documentation</a> &raquo;</li>
+        <li><a href="../index.html">asq v1.0 documentation</a> &raquo;</li>
           <li><a href="reference.html" accesskey="U">API Reference</a> &raquo;</li> 
       </ul>
     </div>  
@@ -53,10 +53,10 @@
           <div class="body">
             
   <div class="section" id="module-asq.queryables">
-<span id="queryables"></span><h1>Queryables<a class="headerlink" href="#module-asq.queryables" title="Permalink to this headline">¶</a></h1>
+<span id="asq-queryables"></span><h1><tt class="docutils literal"><span class="pre">asq.queryables</span></tt><a class="headerlink" href="#module-asq.queryables" title="Permalink to this headline">¶</a></h1>
 <p>Classes which support the queryable interface.</p>
-<div class="section" id="queryable">
-<h2>Queryable<a class="headerlink" href="#queryable" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="asq-queryables-queryable">
+<h2><tt class="docutils literal"><span class="pre">asq.queryables.Queryable</span></tt><a class="headerlink" href="#asq-queryables-queryable" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><dl class="class">
 <dt id="asq.queryables.Queryable">
@@ -75,6 +75,9 @@
 <tr><td><a class="reference internal" href="#asq.queryables.Queryable.__enter__" title="asq.queryables.Queryable.__enter__"><tt class="xref py py-obj docutils literal"><span class="pre">Queryable.__enter__</span></tt></a></td>
 <td>Support for the context manager protocol.</td>
 </tr>
+<tr><td><a class="reference internal" href="#asq.queryables.Queryable.__eq__" title="asq.queryables.Queryable.__eq__"><tt class="xref py py-obj docutils literal"><span class="pre">Queryable.__eq__</span></tt></a></td>
+<td>Determine value equality with another iterable.</td>
+</tr>
 <tr><td><a class="reference internal" href="#asq.queryables.Queryable.__exit__" title="asq.queryables.Queryable.__exit__"><tt class="xref py py-obj docutils literal"><span class="pre">Queryable.__exit__</span></tt></a></td>
 <td>Support for the context manager protocol.</td>
 </tr>
@@ -86,6 +89,9 @@
 </tr>
 <tr><td><a class="reference internal" href="#asq.queryables.Queryable.__iter__" title="asq.queryables.Queryable.__iter__"><tt class="xref py py-obj docutils literal"><span class="pre">Queryable.__iter__</span></tt></a></td>
 <td>Support for the iterator protocol.</td>
+</tr>
+<tr><td><a class="reference internal" href="#asq.queryables.Queryable.__ne__" title="asq.queryables.Queryable.__ne__"><tt class="xref py py-obj docutils literal"><span class="pre">Queryable.__ne__</span></tt></a></td>
+<td>Determine value inequality with another iterable.</td>
 </tr>
 <tr><td><a class="reference internal" href="#asq.queryables.Queryable.__reversed__" title="asq.queryables.Queryable.__reversed__"><tt class="xref py py-obj docutils literal"><span class="pre">Queryable.__reversed__</span></tt></a></td>
 <td>Support for sequence reversal using the reversed() built-in.</td>
@@ -283,6 +289,34 @@ is also provided.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="asq.queryables.Queryable.__eq__">
+<tt class="descname">__eq__</tt><big>(</big><em>rjs</em><big>)</big><a class="headerlink" href="#asq.queryables.Queryable.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine value equality with another iterable.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rhs</strong> &#8211; Any iterable collection.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the sequences are equal in value, otherwise False.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This in the infix operator equivalent of the sequence_equal()
+query operator.</p>
+</div>
+<p class="rubric">Examples</p>
+<p>Test whether a sequence is equal to a list:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">expected</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="n">expected</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="asq.queryables.Queryable.__exit__">
 <tt class="descname">__exit__</tt><big>(</big><em>type</em>, <em>value</em>, <em>traceback</em><big>)</big><a class="headerlink" href="#asq.queryables.Queryable.__exit__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Support for the context manager protocol.</p>
@@ -298,13 +332,19 @@ is also provided.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> &#8211; The index should be between zero and count() - 1 inclusive.
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>index</strong> &#8211; The index should be between zero and count() - 1 inclusive.
 Negative indices are not interpreted in the same way they are
-for built-in lists, and are considered out-of-range.</td>
+for built-in lists, and are considered out-of-range.</p>
+</td>
 </tr>
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">The value of the element at offset index into the sequence.</td>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The value of the element at offset index into the sequence.</p>
+</td>
 </tr>
-<tr class="field"><th class="field-name">Raises :</th><td class="field-body">IndexError - If the index is out-of-range.</td>
+<tr class="field"><th class="field-name">Raises :</th><td class="field-body"><ul class="first last simple">
+<li>ValueError - If the Queryable is closed().</li>
+<li>IndexError - If the index is out-of-range.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -368,7 +408,7 @@ preference to calling the <tt class="docutils literal"><span class="pre">Queryab
 <p class="first admonition-title">Note</p>
 <p class="last">This method should not usually be called directly; use the
 <tt class="docutils literal"><span class="pre">iter()</span></tt> built-in or other Python constructs which check for the
-presence of <tt class="docutils literal"><span class="pre">__iter__()</span></tt>, such as <tt class="docutils literal"><span class="pre">for</span></tt> loops:</p>
+presence of <tt class="docutils literal"><span class="pre">__iter__()</span></tt>, such as <tt class="docutils literal"><span class="pre">for</span></tt> loops.</p>
 </div>
 <p class="rubric">Examples</p>
 <p>Call <tt class="docutils literal"><span class="pre">__iter__()</span></tt> indirectly through the <tt class="docutils literal"><span class="pre">iter()</span></tt> built-in to
@@ -400,6 +440,29 @@ obtain an iterator over the query results:</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="asq.queryables.Queryable.__ne__">
+<tt class="descname">__ne__</tt><big>(</big><em>rjs</em><big>)</big><a class="headerlink" href="#asq.queryables.Queryable.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine value inequality with another iterable.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rhs</strong> &#8211; Any iterable collection.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the sequences are inequal in value, otherwise False.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<p>Test whether a sequence is not equal to a list:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">expected</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">!=</span> <span class="n">expected</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="asq.queryables.Queryable.__reversed__">
 <tt class="descname">__reversed__</tt><big>(</big><big>)</big><a class="headerlink" href="#asq.queryables.Queryable.__reversed__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Support for sequence reversal using the reversed() built-in.</p>
@@ -411,6 +474,8 @@ obtain an iterator over the query results:</p>
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">A Queryable over the reversed sequence.</td>
 </tr>
+<tr class="field"><th class="field-name">Raises :</th><td class="field-body">ValueError - If the Queryable is closed().</td>
+</tr>
 </tbody>
 </table>
 <div class="admonition note">
@@ -421,8 +486,8 @@ provided.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This method should not usually be called directly; use the
-<a href="#id1"><span class="problematic" id="id2">``</span></a>reversed()` built-in or other Python constructs which check for
-the presence of __reversed__().</p>
+<tt class="docutils literal"><span class="pre">reversed()</span></tt> built-in or other Python constructs which check for
+the presence of <tt class="docutils literal"><span class="pre">__reversed__()</span></tt>.</p>
 </div>
 <p class="rubric">Example</p>
 <p>Create a reverse iterator over a queryable for use with a <tt class="docutils literal"><span class="pre">for</span></tt>
@@ -474,7 +539,7 @@ built-in:</p>
 <dt id="asq.queryables.Queryable.__str__">
 <tt class="descname">__str__</tt><big>(</big><big>)</big><a class="headerlink" href="#asq.queryables.Queryable.__str__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a stringified representation of the Queryable.</p>
-<p>The string will <em>not</em> necessarily contain the sequence data.</p>
+<p>The string <em>will</em> necessarily contain the sequence data.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -535,8 +600,8 @@ to the identity function.</li>
 </tr>
 <tr class="field"><th class="field-name">Raises :</th><td class="field-body"><ul class="first last simple">
 <li>ValueError - If called on an empty sequence with no seed value.</li>
-<li>TypeError - If reducer is not callable</li>
-<li>TypeError - If result_selector is not callable</li>
+<li>TypeError - If reducer is not callable.</li>
+<li>TypeError - If result_selector is not callable.</li>
 </ul>
 </td>
 </tr>
@@ -655,14 +720,12 @@ of 13:</p>
 <dt id="asq.queryables.Queryable.as_parallel">
 <tt class="descname">as_parallel</tt><big>(</big><em>pool=None</em><big>)</big><a class="headerlink" href="#asq.queryables.Queryable.as_parallel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a ParallelQueryable for parallel execution of queries.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This feature should be considered experimental alpha quality.</p>
-</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
+<tr class="field"><th class="field-name">Warning :</th><td class="field-body">This feature should be considered experimental alpha quality.</td>
+</tr>
 <tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pool</strong> &#8211; An optional multiprocessing pool which will provide execution
 resources for parellel processing.  If omitted, a pool will be
 created if necessary and managed internally.</td>
@@ -1613,7 +1676,7 @@ satisfy the predicate:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>logger</strong> &#8211; Any object which supports a debug() method which accepts a
 str, such as a Python standard library logger object from the
 logging module.  If logger is not provided or is None, this
@@ -1627,18 +1690,11 @@ evaluated and logged lazily as it consumed.</li>
 </ul>
 </td>
 </tr>
-</tbody>
-</table>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Use of eager=True requires use of sufficient memory to
+<tr class="field"><th class="field-name">Warning :</th><td class="field-body"><p class="first">Use of eager=True requires use of sufficient memory to
 hold the entire sequence which is obviously not possible with
 infinite sequences.  Use with care!</p>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
+</td>
+</tr>
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A queryable over the unaltered source sequence.</p>
 </td>
 </tr>
@@ -1927,11 +1983,11 @@ accepted).</p>
 the predicate is True.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Raises :</th><td class="field-body"><ul class="first simple">
+<tr class="field"><th class="field-name">Raises :</th><td class="field-body"><ul class="first last simple">
 <li>ValueError - If the Queryable is closed.</li>
-<li>TypeError - If classinfo is not a class, type, or tuple of classes,</li>
+<li>TypeError - If classinfo is not a class, type, or tuple of classes,
+types, and such tuples.</li>
 </ul>
-<p class="last">types, and such tuples.</p>
 </td>
 </tr>
 </tbody>
@@ -2149,11 +2205,11 @@ sequence, and then mapping each of those elements through the
 result_selector into the result sequence.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Raises :</th><td class="field-body"><ul class="first simple">
+<tr class="field"><th class="field-name">Raises :</th><td class="field-body"><ul class="first last simple">
 <li>ValueError - If this Queryable has been closed.</li>
-<li>TypeError - If either collection_selector or result_selector are not</li>
+<li>TypeError - If either collection_selector or result_selector are not
+callable.</li>
 </ul>
-<p class="last">callable.</p>
 </td>
 </tr>
 </tbody>
@@ -2529,16 +2585,12 @@ be returned.</p>
 the only element for which the predicate returns True.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Raises :</th><td class="field-body"><ul class="first simple">
+<tr class="field"><th class="field-name">Raises :</th><td class="field-body"><ul class="first last simple">
 <li>ValueError - If the Queryable is closed.</li>
-<li>ValueError - If, when predicate is None the source sequence contains</li>
-</ul>
-<p>more than one element.</p>
-<ul class="simple">
-<li>ValueError - If there are no elements matching the predicate or more</li>
-</ul>
-<p>then one element matching the predicate.</p>
-<ul class="last simple">
+<li>ValueError - If, when predicate is None the source sequence contains
+more than one element.</li>
+<li>ValueError - If there are no elements matching the predicate or more
+then one element matching the predicate.</li>
 <li>TypeError - If the predicate is not callable.</li>
 </ul>
 </td>
@@ -2608,16 +2660,12 @@ the only element for which the predicate returns True. If there are
 no such elements the default value will returned.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Raises :</th><td class="field-body"><ul class="first simple">
+<tr class="field"><th class="field-name">Raises :</th><td class="field-body"><ul class="first last simple">
 <li>ValueError - If the Queryable is closed.</li>
-<li>ValueError - If, when predicate is None the source sequence contains</li>
-</ul>
-<p>more than one element.</p>
-<ul class="simple">
-<li>ValueError - If there is more then one element matching the</li>
-</ul>
-<p>predicate.</p>
-<ul class="last simple">
+<li>ValueError - If, when predicate is None the source sequence contains
+more than one element.</li>
+<li>ValueError - If there is more then one element matching the
+predicate.</li>
 <li>TypeError - If the predicate is not callable.</li>
 </ul>
 </td>
@@ -2995,7 +3043,7 @@ the key and the upper case name as the value:</p>
 <tbody valign="top">
 <tr class="field"><th class="field-name">Raises :</th><td class="field-body"><ul class="first last simple">
 <li>ValueError - If duplicate keys are in the projected source sequence.</li>
-<li>ValueError - If the Queryable is closed()</li>
+<li>ValueError - If the Queryable is closed().</li>
 </ul>
 </td>
 </tr>
@@ -3021,7 +3069,10 @@ the key and the upper case name as the value:</p>
 <tt class="descname">to_str</tt><big>(</big><em>separator</em><big>)</big><a class="headerlink" href="#asq.queryables.Queryable.to_str" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build a string from the source sequence.</p>
 <p>The elements of the query result will each coerced to a string and then
-the resulting strings concatenated to return a single string.</p>
+the resulting strings concatenated to return a single string. This
+allows the natural processing of character sequences as strings. An
+optional separator which will be inserted between each item may be
+specified.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">this method uses immediate execution.</p>
@@ -3030,7 +3081,8 @@ the resulting strings concatenated to return a single string.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>separator</strong> &#8211; An optional string separator.</p>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>separator</strong> &#8211; An optional separator which will be coerced to a string
+and inserted between each source item in the resulting string.</p>
 </td>
 </tr>
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A single string which is the result of stringifying each element
@@ -3039,6 +3091,7 @@ and concatenating the results into a single string.</p>
 </tr>
 <tr class="field"><th class="field-name">Raises :</th><td class="field-body"><ul class="first last simple">
 <li>TypeError - If any element cannot be coerced to a string.</li>
+<li>TypeError - If the separator cannot be coerced to a string.</li>
 <li>ValueError - If the Queryable is closed.</li>
 </ul>
 </td>
@@ -3049,9 +3102,9 @@ and concatenating the results into a single string.</p>
 <p>Convert a sequence of characters into a string:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">chars</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;c&#39;</span><span class="p">,</span> <span class="s">&#39;h&#39;</span><span class="p">,</span> <span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;c&#39;</span><span class="p">,</span> <span class="s">&#39;t&#39;</span><span class="p">,</span> <span class="s">&#39;e&#39;</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="s">&#39;s&#39;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span><span class="o">.</span><span class="n">to_str</span><span class="p">()</span>
+<span class="go">&#39;characters&#39;</span>
 </pre></div>
 </div>
-<p>&#8216;characters&#8217;</p>
 <p>Concatenate some word fragments into a single string:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">syllables</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;pen&#39;</span><span class="p">,</span> <span class="s">&#39;ta&#39;</span><span class="p">,</span> <span class="s">&#39;syll&#39;</span><span class="p">,</span> <span class="s">&#39;ab&#39;</span><span class="p">,</span> <span class="s">&#39;ic&#39;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">syllables</span><span class="p">)</span><span class="o">.</span><span class="n">to_str</span><span class="p">()</span>
@@ -3246,8 +3299,8 @@ sequence equal in length to the shorter of the two:</p>
 
 </div></blockquote>
 </div>
-<div class="section" id="orderedqueryable">
-<h2>OrderedQueryable<a class="headerlink" href="#orderedqueryable" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="asq-queryables-orderedqueryable">
+<h2><tt class="docutils literal"><span class="pre">asq.queryables.OrderedQueryable</span></tt><a class="headerlink" href="#asq-queryables-orderedqueryable" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><dl class="class">
 <dt id="asq.queryables.OrderedQueryable">
@@ -3268,8 +3321,8 @@ you don&#8217;t pay for sorting results which are never enumerated.</p>
 
 </div></blockquote>
 </div>
-<div class="section" id="lookup">
-<h2>Lookup<a class="headerlink" href="#lookup" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="asq-queryables-lookup">
+<h2><tt class="docutils literal"><span class="pre">asq.queryables.Lookup</span></tt><a class="headerlink" href="#asq-queryables-lookup" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><dl class="class">
 <dt id="asq.queryables.Lookup">
@@ -3279,6 +3332,10 @@ you don&#8217;t pay for sorting results which are never enumerated.</p>
 one or more values. The keys in the Lookup are maintained in the order in
 which they were added. The values for each key are also maintained in
 order.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Lookup objects are immutable.</p>
+</div>
 <p>All standard query operators may be used on a Lookup. When iterated or
 used as a Queryable the elements are returned as a sequence of Grouping
 objects.</p>
@@ -3290,17 +3347,209 @@ objects.</p>
 <tbody valign="top">
 </tbody>
 </table>
-<p>TODO: Document Lookup</p>
+<p class="rubric">Example</p>
+<p>Lookup, being a subclass of Queryable supports all of the <tt class="docutils literal"><span class="pre">asq</span></tt> query
+operators over a collection of Groupings. For example, to select only
+those groups containing two or more elements and then flatten those
+groups into a single list, use:</p>
+<div class="highlight-python"><pre> &gt;&gt;&gt; key_value_pairs = [('tree', 'oak'),
+ ...                    ('bird', 'eagle'),
+ ...                    ('bird', 'swallow'),
+ ...                    ('tree', 'birch'),
+ ...                    ('mammal', 'mouse'),
+ ...                    ('tree', 'poplar')]
+ ...
+ &gt;&gt;&gt; lookup = Lookup(key_value_pairs)
+ &gt;&gt;&gt; lookup.where(lambda group: len(group) &gt;= 2).select_many().to_list()
+['oak', 'birch', 'poplar', 'eagle', 'swallow']</pre>
+</div>
+<dl class="method">
+<dt id="asq.queryables.Lookup.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>key_value_pairs</em><big>)</big><a class="headerlink" href="#asq.queryables.Lookup.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a Lookup with a sequence of (key, value) tuples.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key_value_pairs</strong> &#8211; <blockquote>
+<div>An iterable over 2-tuples each containing a key, value pair.</div></blockquote>
+<p class="rubric">Example</p>
+<p>To construct a Lookup from key value pairs:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">key_value_pairs</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;tree&#39;</span><span class="p">,</span> <span class="s">&#39;oak&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;bird&#39;</span><span class="p">,</span> <span class="s">&#39;eagle&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;bird&#39;</span><span class="p">,</span> <span class="s">&#39;swallow&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;tree&#39;</span><span class="p">,</span> <span class="s">&#39;birch&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;mammal&#39;</span><span class="p">,</span> <span class="s">&#39;mouse&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;tree&#39;</span><span class="p">,</span> <span class="s">&#39;poplar&#39;</span><span class="p">)]</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lookup</span> <span class="o">=</span> <span class="n">Lookup</span><span class="p">(</span><span class="n">key_value_pairs</span><span class="p">)</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="asq.queryables.Lookup.__getitem__">
+<tt class="descname">__getitem__</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#asq.queryables.Lookup.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div>The sequence corresponding to a given key, or an empty sequence if
+there are no values corresponding to that key.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> &#8211; The key of the group to be returned.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">The Grouping corresponding to the supplied key.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<p>To retrieve a Grouping for a given key:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">key_value_pairs</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;tree&#39;</span><span class="p">,</span> <span class="s">&#39;oak&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;bird&#39;</span><span class="p">,</span> <span class="s">&#39;eagle&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;bird&#39;</span><span class="p">,</span> <span class="s">&#39;swallow&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;tree&#39;</span><span class="p">,</span> <span class="s">&#39;birch&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;mammal&#39;</span><span class="p">,</span> <span class="s">&#39;mouse&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;tree&#39;</span><span class="p">,</span> <span class="s">&#39;poplar&#39;</span><span class="p">)]</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lookup</span> <span class="o">=</span> <span class="n">Lookup</span><span class="p">(</span><span class="n">key_value_pairs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lookup</span><span class="p">[</span><span class="s">&#39;tree&#39;</span><span class="p">]</span>
+<span class="go">Grouping(key=&#39;tree&#39;)</span>
+</pre></div>
+</div>
+<p>but if no such key exists a Grouping will still be returned, albeit an
+empty one:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">vehicles</span> <span class="o">=</span> <span class="n">lookup</span><span class="p">[</span><span class="s">&#39;vehicle&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vehicles</span>
+<span class="go">Grouping(key=&#39;vehicle&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">vehicles</span><span class="p">)</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="asq.queryables.Lookup.__len__">
+<tt class="descname">__len__</tt><big>(</big><big>)</big><a class="headerlink" href="#asq.queryables.Lookup.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Support for the len() built-in function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">The number of Groupings (keys) in the lookup.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>To determine the number of Groupings in a Lookup:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">key_value_pairs</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;tree&#39;</span><span class="p">,</span> <span class="s">&#39;oak&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;bird&#39;</span><span class="p">,</span> <span class="s">&#39;eagle&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;bird&#39;</span><span class="p">,</span> <span class="s">&#39;swallow&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;tree&#39;</span><span class="p">,</span> <span class="s">&#39;birch&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;mammal&#39;</span><span class="p">,</span> <span class="s">&#39;mouse&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;tree&#39;</span><span class="p">,</span> <span class="s">&#39;poplar&#39;</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lookup</span> <span class="o">=</span> <span class="n">Lookup</span><span class="p">(</span><span class="n">key_value_pairs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">lookup</span><span class="p">)</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="asq.queryables.Lookup.__contains__">
+<tt class="descname">__contains__</tt><big>(</big><big>)</big><a class="headerlink" href="#asq.queryables.Lookup.__contains__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Support for the &#8216;in&#8217; membership operator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> &#8211; The key for which membership will be tested.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the Lookup contains a Grouping for the specified key,
+otherwise False.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>To determine whether a Lookup contains a specific Grouping:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">key_value_pairs</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;tree&#39;</span><span class="p">,</span> <span class="s">&#39;oak&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;bird&#39;</span><span class="p">,</span> <span class="s">&#39;eagle&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;bird&#39;</span><span class="p">,</span> <span class="s">&#39;swallow&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;tree&#39;</span><span class="p">,</span> <span class="s">&#39;birch&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;mammal&#39;</span><span class="p">,</span> <span class="s">&#39;mouse&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;tree&#39;</span><span class="p">,</span> <span class="s">&#39;poplar&#39;</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lookup</span> <span class="o">=</span> <span class="n">Lookup</span><span class="p">(</span><span class="n">key_value_pairs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s">&#39;tree&#39;</span> <span class="ow">in</span> <span class="n">lookup</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s">&#39;vehicle&#39;</span> <span class="ow">in</span> <span class="n">lookup</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="asq.queryables.Lookup.__repr__">
+<tt class="descname">__repr__</tt><big>(</big><big>)</big><a class="headerlink" href="#asq.queryables.Lookup.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Support for the repr() built-in function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">The official string representation of the object.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>To produce a string representation of a Lookup:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">key_value_pairs</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;tree&#39;</span><span class="p">,</span> <span class="s">&#39;oak&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;bird&#39;</span><span class="p">,</span> <span class="s">&#39;eagle&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;bird&#39;</span><span class="p">,</span> <span class="s">&#39;swallow&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;tree&#39;</span><span class="p">,</span> <span class="s">&#39;birch&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;mammal&#39;</span><span class="p">,</span> <span class="s">&#39;mouse&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;tree&#39;</span><span class="p">,</span> <span class="s">&#39;poplar&#39;</span><span class="p">)]</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lookup</span> <span class="o">=</span> <span class="n">Lookup</span><span class="p">(</span><span class="n">key_value_pairs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">repr</span><span class="p">(</span><span class="n">lookup</span><span class="p">)</span>
+<span class="go">&quot;Lookup([(&#39;tree&#39;, &#39;oak&#39;), (&#39;tree&#39;, &#39;birch&#39;), (&#39;tree&#39;, &#39;poplar&#39;),</span>
+<span class="go">(&#39;bird&#39;, &#39;eagle&#39;), (&#39;bird&#39;, &#39;swallow&#39;), (&#39;mammal&#39;, &#39;mouse&#39;)])&quot;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="asq.queryables.Lookup.apply_result_selector">
+<tt class="descname">apply_result_selector</tt><big>(</big><em>selector</em><big>)</big><a class="headerlink" href="#asq.queryables.Lookup.apply_result_selector" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Example</p>
+<p>Convert each group to a set using a lambda selector and put the
+resulting sets in a list:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">key_value_pairs</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;tree&#39;</span><span class="p">,</span> <span class="s">&#39;oak&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;bird&#39;</span><span class="p">,</span> <span class="s">&#39;eagle&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;bird&#39;</span><span class="p">,</span> <span class="s">&#39;swallow&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;tree&#39;</span><span class="p">,</span> <span class="s">&#39;birch&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="p">(</span><span class="s">&#39;mammal&#39;</span><span class="p">,</span> <span class="s">&#39;mouse&#39;</span><span class="p">),</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lookup</span> <span class="o">=</span> <span class="n">Lookup</span><span class="p">(</span><span class="n">key_value_pairs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lookup</span><span class="o">.</span><span class="n">apply_result_selector</span><span class="p">(</span><span class="k">lambda</span> <span class="n">key</span><span class="p">,</span> <span class="n">group</span><span class="p">:</span> <span class="nb">set</span><span class="p">(</span><span class="n">group</span><span class="p">))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[set([&#39;poplar&#39;, &#39;oak&#39;, &#39;birch&#39;]), set([&#39;eagle&#39;, &#39;swallow&#39;]),</span>
+<span class="go">set([&#39;mouse&#39;])]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
 </dd></dl>
 
 </div></blockquote>
 </div>
-<div class="section" id="grouping">
-<h2>Grouping<a class="headerlink" href="#grouping" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="asq-queryables-grouping">
+<h2><tt class="docutils literal"><span class="pre">asq.queryables.Grouping</span></tt><a class="headerlink" href="#asq-queryables-grouping" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><dl class="class">
 <dt id="asq.queryables.Grouping">
-<em class="property">class </em><tt class="descclassname">asq.queryables.</tt><tt class="descname">Grouping</tt><big>(</big><em>ordered_dict</em>, <em>key</em><big>)</big><a class="headerlink" href="#asq.queryables.Grouping" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">asq.queryables.</tt><tt class="descname">Grouping</tt><big>(</big><em>key</em>, <em>items</em><big>)</big><a class="headerlink" href="#asq.queryables.Grouping" title="Permalink to this definition">¶</a></dt>
 <dd><p>A collection of objects which share a common key.</p>
 <p>All standard query operators may be used on a Grouping.</p>
 <div class="admonition note">
@@ -3316,7 +3565,127 @@ objects. Instances of this class are retrieved from Lookup objects.</p>
 <tbody valign="top">
 </tbody>
 </table>
-<p>TODO: Grouping</p>
+<p class="rubric">Example</p>
+<p>Grouping, being a subclass of Queryable, supports all of the <tt class="docutils literal"><span class="pre">asq</span></tt>
+query operators. For example, to produce a list of the group items in
+upper case:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">Grouping</span><span class="p">(</span><span class="s">&quot;fruit&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;pear&quot;</span><span class="p">,</span> <span class="s">&quot;apple&quot;</span><span class="p">,</span> <span class="s">&quot;orange&quot;</span><span class="p">,</span> <span class="s">&quot;banana&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">upper</span><span class="p">)</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[&#39;PEAR&#39;, &#39;APPLE&#39;, &#39;ORANGE&#39;, &#39;BANANA&#39;]</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="asq.queryables.Grouping.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>key</em>, <em>iterable</em><big>)</big><a class="headerlink" href="#asq.queryables.Grouping.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Grouping with a given key and a collection of members.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>key</strong> &#8211; The key corresponding to this Grouping</li>
+<li><strong>items</strong> &#8211; An iterable collection of the members of the group.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>Construct a Grouping from a list:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Grouping</span><span class="p">(</span><span class="s">&quot;fruit&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;pear&quot;</span><span class="p">,</span> <span class="s">&quot;apple&quot;</span><span class="p">,</span> <span class="s">&quot;orange&quot;</span><span class="p">,</span> <span class="s">&quot;banana&quot;</span><span class="p">])</span>
+<span class="go">Grouping(key=&#39;fruit&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="asq.queryables.Grouping.key">
+<tt class="descname">key</tt><a class="headerlink" href="#asq.queryables.Grouping.key" title="Permalink to this definition">¶</a></dt>
+<dd><p>The key common to all elements.</p>
+<p class="rubric">Example</p>
+<p>To retrieve the key from a Grouping:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">Grouping</span><span class="p">(</span><span class="s">&quot;fruit&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;pear&quot;</span><span class="p">,</span> <span class="s">&quot;apple&quot;</span><span class="p">,</span> <span class="s">&quot;orange&quot;</span><span class="p">,</span> <span class="s">&quot;banana&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">key</span>
+<span class="go">&#39;fruit&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="asq.queryables.Grouping.__len__">
+<tt class="descname">__len__</tt><big>(</big><big>)</big><a class="headerlink" href="#asq.queryables.Grouping.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of items in the Grouping.</p>
+<p class="rubric">Example</p>
+<p>To retrieve the number of items in a Grouping:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">Grouping</span><span class="p">(</span><span class="s">&quot;fruit&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;pear&quot;</span><span class="p">,</span> <span class="s">&quot;apple&quot;</span><span class="p">,</span> <span class="s">&quot;orange&quot;</span><span class="p">,</span> <span class="s">&quot;banana&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="go">4</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="asq.queryables.Grouping.__eq__">
+<tt class="descname">__eq__</tt><big>(</big><big>)</big><a class="headerlink" href="#asq.queryables.Grouping.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine value equality with another grouping.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rhs</strong> &#8211; The object on the right-hand-side of the comparison must
+support a property called &#8216;key&#8217; and be iterable.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the keys and sequences are equal, otherwise False.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>To test whether two Groupings are equal in value:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">g1</span> <span class="o">=</span> <span class="n">Grouping</span><span class="p">(</span><span class="s">&quot;fruit&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;pear&quot;</span><span class="p">,</span> <span class="s">&quot;apple&quot;</span><span class="p">,</span> <span class="s">&quot;orange&quot;</span><span class="p">,</span> <span class="s">&quot;banana&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g2</span> <span class="o">=</span> <span class="n">Grouping</span><span class="p">(</span><span class="s">&quot;fruit&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;pear&quot;</span><span class="p">,</span> <span class="s">&quot;apple&quot;</span><span class="p">,</span> <span class="s">&quot;orange&quot;</span><span class="p">,</span> <span class="s">&quot;banana&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g1</span> <span class="o">==</span> <span class="n">g2</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="asq.queryables.Grouping.__ne__">
+<tt class="descname">__ne__</tt><big>(</big><big>)</big><a class="headerlink" href="#asq.queryables.Grouping.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine value inequality with another grouping.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rhs</strong> &#8211; The object on the right-hand-side of the comparison must
+support a property called &#8216;key&#8217; and be iterable.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the keys or sequences are not equal, otherwise False.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>To test whether two Groupings are inequal in value:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">g1</span> <span class="o">=</span> <span class="n">Grouping</span><span class="p">(</span><span class="s">&quot;fruit&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;pear&quot;</span><span class="p">,</span> <span class="s">&quot;apple&quot;</span><span class="p">,</span> <span class="s">&quot;orange&quot;</span><span class="p">,</span> <span class="s">&quot;banana&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g2</span> <span class="o">=</span> <span class="n">Grouping</span><span class="p">(</span><span class="s">&quot;fruit&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;cherry&quot;</span><span class="p">,</span> <span class="s">&quot;apple&quot;</span><span class="p">,</span> <span class="s">&quot;orange&quot;</span><span class="p">,</span> <span class="s">&quot;banana&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g1</span> <span class="o">!=</span> <span class="n">g2</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="asq.queryables.Grouping.__repr__">
+<tt class="descname">__repr__</tt><big>(</big><big>)</big><a class="headerlink" href="#asq.queryables.Grouping.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Example</p>
+<p>To create a string representation of the Grouping:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">Grouping</span><span class="p">(</span><span class="s">&quot;fruit&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;pear&quot;</span><span class="p">,</span> <span class="s">&quot;apple&quot;</span><span class="p">,</span> <span class="s">&quot;orange&quot;</span><span class="p">,</span> <span class="s">&quot;banana&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">repr</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="go">Grouping(key=&quot;fruit&quot;, items=[&quot;pear&quot;, &quot;apple&quot;, &quot;orange&quot;, &quot;banana&quot;])</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </dd></dl>
 
 </div></blockquote>
@@ -3334,21 +3703,21 @@ objects. Instances of this class are retrieved from Lookup objects.</p>
             </a></p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Queryables</a><ul>
-<li><a class="reference internal" href="#queryable">Queryable</a></li>
-<li><a class="reference internal" href="#orderedqueryable">OrderedQueryable</a></li>
-<li><a class="reference internal" href="#lookup">Lookup</a></li>
-<li><a class="reference internal" href="#grouping">Grouping</a></li>
+<li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">asq.queryables</span></tt></a><ul>
+<li><a class="reference internal" href="#asq-queryables-queryable"><tt class="docutils literal"><span class="pre">asq.queryables.Queryable</span></tt></a></li>
+<li><a class="reference internal" href="#asq-queryables-orderedqueryable"><tt class="docutils literal"><span class="pre">asq.queryables.OrderedQueryable</span></tt></a></li>
+<li><a class="reference internal" href="#asq-queryables-lookup"><tt class="docutils literal"><span class="pre">asq.queryables.Lookup</span></tt></a></li>
+<li><a class="reference internal" href="#asq-queryables-grouping"><tt class="docutils literal"><span class="pre">asq.queryables.Grouping</span></tt></a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="initiators.html"
-                        title="previous chapter">Initiators</a></p>
+                        title="previous chapter"><tt class="docutils literal docutils literal"><span class="pre">asq.initiators</span></tt></a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="selectors.html"
-                        title="next chapter">Selectors</a></p>
+                        title="next chapter"><tt class="docutils literal docutils literal"><span class="pre">asq.selectors</span></tt></a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/reference/queryables.txt"
@@ -3381,12 +3750,12 @@ objects. Instances of this class are retrieved from Lookup objects.</p>
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="selectors.html" title="Selectors"
+          <a href="selectors.html" title="asq.selectors"
              >next</a> |</li>
         <li class="right" >
-          <a href="initiators.html" title="Initiators"
+          <a href="initiators.html" title="asq.initiators"
              >previous</a> |</li>
-        <li><a href="../index.html">asq v0.9 documentation</a> &raquo;</li>
+        <li><a href="../index.html">asq v1.0 documentation</a> &raquo;</li>
           <li><a href="reference.html" >API Reference</a> &raquo;</li> 
       </ul>
     </div>

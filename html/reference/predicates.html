@@ -6,13 +6,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Predicates &mdash; asq v0.9 documentation</title>
+    <title>asq.predicates &mdash; asq v1.0 documentation</title>
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.9',
+        VERSION:     '1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -21,10 +21,10 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="asq v0.9 documentation" href="../index.html" />
+    <link rel="top" title="asq v1.0 documentation" href="../index.html" />
     <link rel="up" title="API Reference" href="reference.html" />
-    <link rel="next" title="Records and new()" href="record.html" />
-    <link rel="prev" title="Selectors" href="selectors.html" /> 
+    <link rel="next" title="asq.record" href="record.html" />
+    <link rel="prev" title="asq.selectors" href="selectors.html" /> 
   </head>
   <body>
     <div class="related">
@@ -37,12 +37,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="record.html" title="Records and new()"
+          <a href="record.html" title="asq.record"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="selectors.html" title="Selectors"
+          <a href="selectors.html" title="asq.selectors"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">asq v0.9 documentation</a> &raquo;</li>
+        <li><a href="../index.html">asq v1.0 documentation</a> &raquo;</li>
           <li><a href="reference.html" accesskey="U">API Reference</a> &raquo;</li> 
       </ul>
     </div>  
@@ -53,7 +53,7 @@
           <div class="body">
             
   <div class="section" id="module-asq.predicates">
-<span id="predicates"></span><h1>Predicates<a class="headerlink" href="#module-asq.predicates" title="Permalink to this headline">¶</a></h1>
+<span id="asq-predicates"></span><h1><tt class="docutils literal"><span class="pre">asq.predicates</span></tt><a class="headerlink" href="#module-asq.predicates" title="Permalink to this headline">¶</a></h1>
 <p>Predicate function factories</p>
 <p>Predicates are boolean functions which return True or False.</p>
 <div class="section" id="predicate-factories">
@@ -74,11 +74,11 @@ value passed to the unary predicate.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
+<tr><td><a class="reference internal" href="#asq.predicates.contains_" title="asq.predicates.contains_"><tt class="xref py py-obj docutils literal"><span class="pre">contains_</span></tt></a></td>
+<td>Create a unary predicate which tests for membership if its argument.</td>
+</tr>
 <tr><td><a class="reference internal" href="#asq.predicates.eq_" title="asq.predicates.eq_"><tt class="xref py py-obj docutils literal"><span class="pre">eq_</span></tt></a></td>
 <td>Create a predicate which tests its argument for equality with a value.</td>
-</tr>
-<tr><td><a class="reference internal" href="#asq.predicates.in_" title="asq.predicates.in_"><tt class="xref py py-obj docutils literal"><span class="pre">in_</span></tt></a></td>
-<td>Create a unary predicate which tests for membership if its argument.</td>
 </tr>
 <tr><td><a class="reference internal" href="#asq.predicates.is_" title="asq.predicates.is_"><tt class="xref py py-obj docutils literal"><span class="pre">is_</span></tt></a></td>
 <td>Create a predicate which performs an identity comparison of its argument with a value.</td>
@@ -101,6 +101,31 @@ value passed to the unary predicate.</p>
 </tbody>
 </table>
 <dl class="function">
+<dt id="asq.predicates.contains_">
+<tt class="descclassname">asq.predicates.</tt><tt class="descname">contains_</tt><big>(</big><em>lhs</em><big>)</big><a class="headerlink" href="#asq.predicates.contains_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a unary predicate which tests for membership if its argument.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lhs</strong> &#8211; (left-hand-side) The value to test for membership for in the
+predicate argument.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A unary predicate function which determines whether its single
+arguments (lhs) contains lhs.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>Filter for specific words containing &#8216;ei&#8217;:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;banana&#39;</span><span class="p">,</span> <span class="s">&#39;receive&#39;</span><span class="p">,</span> <span class="s">&#39;believe&#39;</span><span class="p">,</span> <span class="s">&#39;ticket&#39;</span><span class="p">,</span> <span class="s">&#39;deceive&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">words</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">contains_</span><span class="p">(</span><span class="s">&#39;ei&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="go">[&#39;receive&#39;, &#39;deceive&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
 <dt id="asq.predicates.eq_">
 <tt class="descclassname">asq.predicates.</tt><tt class="descname">eq_</tt><big>(</big><em>rhs</em><big>)</big><a class="headerlink" href="#asq.predicates.eq_" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a predicate which tests its argument for equality with a value.</p>
@@ -121,31 +146,6 @@ for equality with rhs.</td>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">89</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">43</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">eq_</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
 <span class="go">[5, 5]</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="function">
-<dt id="asq.predicates.in_">
-<tt class="descclassname">asq.predicates.</tt><tt class="descname">in_</tt><big>(</big><em>lhs</em><big>)</big><a class="headerlink" href="#asq.predicates.in_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a unary predicate which tests for membership if its argument.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lhs</strong> &#8211; (left-hand-side) The value to test for membership for in the
-predicate argument.</td>
-</tr>
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A unary predicate function which determines whether its single
-arguments (lhs) contains lhs.</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Example</p>
-<p>Filter for specific words containing &#8216;ei&#8217;:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;banana&#39;</span><span class="p">,</span> <span class="s">&#39;receive&#39;</span><span class="p">,</span> <span class="s">&#39;believe&#39;</span><span class="p">,</span> <span class="s">&#39;ticket&#39;</span><span class="p">,</span> <span class="s">&#39;deceive&#39;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">words</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">in_</span><span class="p">(</span><span class="s">&#39;ei&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
-<span class="go">[&#39;receive&#39;, &#39;deceive&#39;]</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -333,20 +333,11 @@ is outside the range 5 to 37.</p>
 <tr><td><a class="reference internal" href="#asq.predicates.and_" title="asq.predicates.and_"><tt class="xref py py-obj docutils literal"><span class="pre">and_</span></tt></a></td>
 <td>A predicate combinator which produces the a new predicate which is the logical conjunction of two existing unary predicates.</td>
 </tr>
-<tr><td><a class="reference internal" href="#asq.predicates.nand_" title="asq.predicates.nand_"><tt class="xref py py-obj docutils literal"><span class="pre">nand_</span></tt></a></td>
-<td>A predicate combinator which produces the a new predicate which is the negated logical conjunction of two existing unary predicates.</td>
-</tr>
-<tr><td><a class="reference internal" href="#asq.predicates.nor_" title="asq.predicates.nor_"><tt class="xref py py-obj docutils literal"><span class="pre">nor_</span></tt></a></td>
-<td>A predicate combinator which produces the a new predicate which is the logical nor of two existing unary predicates.</td>
-</tr>
 <tr><td><a class="reference internal" href="#asq.predicates.not_" title="asq.predicates.not_"><tt class="xref py py-obj docutils literal"><span class="pre">not_</span></tt></a></td>
 <td>A predicate combinator which negates produces an inverted predicate.</td>
 </tr>
 <tr><td><a class="reference internal" href="#asq.predicates.or_" title="asq.predicates.or_"><tt class="xref py py-obj docutils literal"><span class="pre">or_</span></tt></a></td>
 <td>A predicate combinator which produces the a new predicate which is the logical disjunction of two existing unary predicates.</td>
-</tr>
-<tr><td><a class="reference internal" href="#asq.predicates.xnor_" title="asq.predicates.xnor_"><tt class="xref py py-obj docutils literal"><span class="pre">xnor_</span></tt></a></td>
-<td>A predicate combinator which produces the a new predicate which is the logical equality of two existing unary predicates.</td>
 </tr>
 <tr><td><a class="reference internal" href="#asq.predicates.xor_" title="asq.predicates.xor_"><tt class="xref py py-obj docutils literal"><span class="pre">xor_</span></tt></a></td>
 <td>A predicate combinator which produces the a new predicate which is the logical exclusive disjunction of two existing unary predicates.</td>
@@ -381,72 +372,6 @@ predicate1 and predicate2.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;alphabet&#39;</span><span class="p">,</span> <span class="s">&#39;train&#39;</span><span class="p">,</span> <span class="s">&#39;apple&#39;</span><span class="p">,</span> <span class="s">&#39;aghast&#39;</span><span class="p">,</span> <span class="s">&#39;tent&#39;</span><span class="p">,</span> <span class="s">&#39;alarm&#39;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">words</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">and_</span><span class="p">(</span><span class="n">m_</span><span class="p">(</span><span class="s">&#39;startswith&#39;</span><span class="p">,</span> <span class="s">&#39;a&#39;</span><span class="p">),</span> <span class="n">m_</span><span class="p">(</span><span class="s">&#39;endswith&#39;</span><span class="p">,</span> <span class="s">&#39;t&#39;</span><span class="p">)))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
 <span class="go">[&#39;alphabet&#39;, &#39;aghast&#39;]</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="function">
-<dt id="asq.predicates.nand_">
-<tt class="descclassname">asq.predicates.</tt><tt class="descname">nand_</tt><big>(</big><em>predicate1</em>, <em>predicate2</em><big>)</big><a class="headerlink" href="#asq.predicates.nand_" title="Permalink to this definition">¶</a></dt>
-<dd><p>A predicate combinator which produces the a new predicate which is the
-negated logical conjunction of two existing unary predicates.</p>
-<p>The predicate returned by this combinator returns True when at least one of
-the supplied predicates returns False, otherwise it returns False.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>predicate1</strong> &#8211; A unary predicate function.</li>
-<li><strong>predicate2</strong> &#8211; A unary predicate function.</li>
-</ul>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A unary predicate function which is the negated logical conjunction of
-predicate1 and predicate2.</p>
-</td>
-</tr>
-</tbody>
-</table>
-<p>..rubric:: Example</p>
-<p>Filter a list for all the words which don&#8217;t both start and end with the
-letters &#8216;a&#8217; and &#8216;t&#8217; respectively:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;alphabet&#39;</span><span class="p">,</span> <span class="s">&#39;train&#39;</span><span class="p">,</span> <span class="s">&#39;apple&#39;</span><span class="p">,</span> <span class="s">&#39;aghast&#39;</span><span class="p">,</span> <span class="s">&#39;tent&#39;</span><span class="p">,</span> <span class="s">&#39;alarm&#39;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">words</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">nand_</span><span class="p">(</span><span class="n">m_</span><span class="p">(</span><span class="s">&#39;startswith&#39;</span><span class="p">,</span> <span class="s">&#39;a&#39;</span><span class="p">),</span> <span class="n">m_</span><span class="p">(</span><span class="s">&#39;endswith&#39;</span><span class="p">,</span> <span class="s">&#39;t&#39;</span><span class="p">)))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
-<span class="go">[&#39;train&#39;, &#39;apple&#39;, &#39;tent&#39;, &#39;alarm&#39;]</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="function">
-<dt id="asq.predicates.nor_">
-<tt class="descclassname">asq.predicates.</tt><tt class="descname">nor_</tt><big>(</big><em>predicate1</em>, <em>predicate2</em><big>)</big><a class="headerlink" href="#asq.predicates.nor_" title="Permalink to this definition">¶</a></dt>
-<dd><p>A predicate combinator which produces the a new predicate which is the
-logical nor of two existing unary predicates.</p>
-<p>The predicate returned by this combinator returns True when neither of the
-two supplied predicates return True, otherwise it returns False.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>predicate1</strong> &#8211; A unary predicate function.</li>
-<li><strong>predicate2</strong> &#8211; A unary predicate function.</li>
-</ul>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A unary predicate function which is the logical nor of
-predicate1 and predicate2.</p>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Example</p>
-<p>Filter a list for all words which neither start with &#8216;a&#8217; nor end with
-&#8216;t&#8217;:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;alphabet&#39;</span><span class="p">,</span> <span class="s">&#39;train&#39;</span><span class="p">,</span> <span class="s">&#39;apple&#39;</span><span class="p">,</span> <span class="s">&#39;aghast&#39;</span><span class="p">,</span> <span class="s">&#39;tent&#39;</span><span class="p">,</span> <span class="s">&#39;alarm&#39;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">words</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">nor_</span><span class="p">(</span><span class="n">m_</span><span class="p">(</span><span class="s">&#39;startswith&#39;</span><span class="p">,</span> <span class="s">&#39;a&#39;</span><span class="p">),</span> <span class="n">m_</span><span class="p">(</span><span class="s">&#39;endswith&#39;</span><span class="p">,</span> <span class="s">&#39;t&#39;</span><span class="p">)))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
-<span class="go">[&#39;train&#39;]</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -544,39 +469,6 @@ but not both:</p>
 </div>
 </dd></dl>
 
-<dl class="function">
-<dt id="asq.predicates.xnor_">
-<tt class="descclassname">asq.predicates.</tt><tt class="descname">xnor_</tt><big>(</big><em>predicate1</em>, <em>predicate2</em><big>)</big><a class="headerlink" href="#asq.predicates.xnor_" title="Permalink to this definition">¶</a></dt>
-<dd><p>A predicate combinator which produces the a new predicate which is the
-logical equality of two existing unary predicates.</p>
-<p>The predicate returned by this combinator returns True when the two
-supplied predicates return the same value, otherwise it returns False.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>predicate1</strong> &#8211; A unary predicate function.</li>
-<li><strong>predicate2</strong> &#8211; A unary predicate function.</li>
-</ul>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A unary predicate function which is the logical equality of predicate1
-and predicate2.</p>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Example</p>
-<p>Filter a list for all words which, if they start with &#8216;a&#8217; end with &#8216;t&#8217; or
-don&#8217;t start with &#8216;a&#8217; and don&#8217;t end with &#8216;t&#8217;:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;alphabet&#39;</span><span class="p">,</span> <span class="s">&#39;train&#39;</span><span class="p">,</span> <span class="s">&#39;apple&#39;</span><span class="p">,</span> <span class="s">&#39;aghast&#39;</span><span class="p">,</span> <span class="s">&#39;tent&#39;</span><span class="p">,</span> <span class="s">&#39;alarm&#39;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="p">(</span><span class="n">words</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">xnor_</span><span class="p">(</span><span class="n">m_</span><span class="p">(</span><span class="s">&#39;startswith&#39;</span><span class="p">,</span> <span class="s">&#39;a&#39;</span><span class="p">),</span> <span class="n">m_</span><span class="p">(</span><span class="s">&#39;endswith&#39;</span><span class="p">,</span> <span class="s">&#39;t&#39;</span><span class="p">)))</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
-<span class="go">[&#39;alphabet&#39;, &#39;train&#39;, &#39;aghast&#39;]</span>
-</pre></div>
-</div>
-</dd></dl>
-
 </div></blockquote>
 </div>
 </div>
@@ -592,7 +484,7 @@ don&#8217;t start with &#8216;a&#8217; and don&#8217;t end with &#8216;t&#8217;:
             </a></p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Predicates</a><ul>
+<li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">asq.predicates</span></tt></a><ul>
 <li><a class="reference internal" href="#predicate-factories">Predicate factories</a></li>
 <li><a class="reference internal" href="#predicate-combinators">Predicate combinators</a></li>
 </ul>
@@ -601,10 +493,10 @@ don&#8217;t start with &#8216;a&#8217; and don&#8217;t end with &#8216;t&#8217;:
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="selectors.html"
-                        title="previous chapter">Selectors</a></p>
+                        title="previous chapter"><tt class="docutils literal"><span class="pre">asq.selectors</span></tt></a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="record.html"
-                        title="next chapter">Records and <tt class="docutils literal docutils literal"><span class="pre">new()</span></tt></a></p>
+                        title="next chapter"><tt class="docutils literal docutils literal"><span class="pre">asq.record</span></tt></a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/reference/predicates.txt"
@@ -637,12 +529,12 @@ don&#8217;t start with &#8216;a&#8217; and don&#8217;t end with &#8216;t&#8217;:
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="record.html" title="Records and new()"
+          <a href="record.html" title="asq.record"
              >next</a> |</li>
         <li class="right" >
-          <a href="selectors.html" title="Selectors"
+          <a href="selectors.html" title="asq.selectors"
              >previous</a> |</li>
-        <li><a href="../index.html">asq v0.9 documentation</a> &raquo;</li>
+        <li><a href="../index.html">asq v1.0 documentation</a> &raquo;</li>
           <li><a href="reference.html" >API Reference</a> &raquo;</li> 
       </ul>
     </div>

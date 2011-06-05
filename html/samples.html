@@ -1,0 +1,192 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Samples &mdash; asq v1.0 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="asq v1.0 documentation" href="index.html" />
+    <link rel="prev" title="Changes" href="changes.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="changes.html" title="Changes"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">asq v1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="samples">
+<h1>Samples<a class="headerlink" href="#samples" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="mandelbrot">
+<h2>Mandelbrot<a class="headerlink" href="#mandelbrot" title="Permalink to this headline">¶</a></h2>
+<p>Visualising the Mandelbrot fractal with <tt class="docutils literal"><span class="pre">asq</span></tt>. This is a direct translation
+of Jon Skeet&#8217;s original <a class="reference external" href="http://msmvps.com/blogs/jon_skeet/archive/2008/02/26/visualising-the-mandelbrot-set-with-linq-yet-again.aspx">LINQ Mandelbrot</a>
+from LINQ in C# to <tt class="docutils literal"><span class="pre">asq</span></tt> in Python. The sample requires the <a class="reference external" href="http://www.pythonware.com/products/pil/">Python Imaging
+Library</a> and so at the time of
+writing only works with Python 2.</p>
+<p>This example can be found in the source distribution of <tt class="docutils literal"><span class="pre">asq</span></tt> under
+<tt class="docutils literal"><span class="pre">asq/examples/mandelbrot.py</span></tt>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="sd">&#39;&#39;&#39;A conversion of Jon Skeet&#39;s LINQ Mandelbrot from LINQ to asq.</span>
+
+<span class="sd">The original can be found at</span>
+
+<span class="sd">http://msmvps.com/blogs/jon_skeet/archive/2008/02/26/visualising-the-mandelbrot-set-with-linq-yet-again.aspx</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">colorsys</span>
+<span class="c">#import Image</span>
+
+<span class="kn">from</span> <span class="nn">asq.initiators</span> <span class="kn">import</span> <span class="n">integers</span><span class="p">,</span> <span class="n">query</span>
+
+
+<span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">start</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">value</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">colnorm</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">255</span> <span class="o">*</span> <span class="n">r</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">255</span> <span class="o">*</span> <span class="n">g</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">255</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">col</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">max</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="nb">max</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">colnorm</span><span class="p">(</span><span class="n">colorsys</span><span class="o">.</span><span class="n">hsv_to_rgb</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">mandelbrot</span><span class="p">():</span>
+    <span class="n">MaxIterations</span> <span class="o">=</span> <span class="mi">200</span>
+    <span class="n">SampleWidth</span> <span class="o">=</span> <span class="mf">3.2</span>
+    <span class="n">SampleHeight</span> <span class="o">=</span> <span class="mf">2.5</span>
+    <span class="n">OffsetX</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.1</span>
+    <span class="n">OffsetY</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.25</span>
+
+    <span class="n">ImageWidth</span> <span class="o">=</span> <span class="mi">480</span>
+    <span class="n">ImageHeight</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">SampleHeight</span> <span class="o">*</span> <span class="n">ImageWidth</span> <span class="o">/</span> <span class="n">SampleWidth</span><span class="p">)</span>
+
+    <span class="n">query</span> <span class="o">=</span> <span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ImageHeight</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="n">SampleHeight</span><span class="p">)</span> <span class="o">/</span> <span class="n">ImageHeight</span> <span class="o">+</span> <span class="n">OffsetY</span><span class="p">)</span> \
+            <span class="o">.</span><span class="n">select_many_with_correspondence</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ImageWidth</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">SampleWidth</span><span class="p">)</span> <span class="o">/</span> <span class="n">ImageWidth</span> <span class="o">+</span> <span class="n">OffsetX</span><span class="p">),</span>
+                <span class="k">lambda</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span> \
+            <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="k">lambda</span> <span class="n">real_imag</span><span class="p">:</span> <span class="nb">complex</span><span class="p">(</span><span class="o">*</span><span class="n">real_imag</span><span class="p">))</span> \
+            <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">query</span><span class="p">(</span><span class="n">generate</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">c</span><span class="p">))</span>
+                              <span class="o">.</span><span class="n">take_while</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">real</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">x</span><span class="o">.</span><span class="n">imag</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">)</span>
+                              <span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">MaxIterations</span><span class="p">)</span>
+                              <span class="o">.</span><span class="n">count</span><span class="p">())</span> \
+            <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="p">((</span><span class="n">c</span> <span class="o">*</span> <span class="mi">7</span><span class="p">)</span> <span class="o">%</span> <span class="mi">255</span><span class="p">,</span> <span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="mi">5</span><span class="p">)</span> <span class="o">%</span> <span class="mi">255</span><span class="p">,</span> <span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="mi">11</span><span class="p">)</span> <span class="o">%</span> <span class="mi">255</span><span class="p">)</span> <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="n">MaxIterations</span> <span class="k">else</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+
+    <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s">&quot;RGB&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">ImageWidth</span><span class="p">,</span> <span class="n">ImageHeight</span><span class="p">))</span>
+    <span class="n">image</span><span class="o">.</span><span class="n">putdata</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">image</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">mandelbrot</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This example can be be run with:</p>
+<div class="highlight-python"><pre>python -m asq.examples.mandelbrot</pre>
+</div>
+<p>which produces</p>
+<img alt="_images/mandelbrot1.png" src="_images/mandelbrot1.png" />
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/asq_logo_150.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Samples</a><ul>
+<li><a class="reference internal" href="#mandelbrot">Mandelbrot</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="changes.html"
+                        title="previous chapter">Changes</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/samples.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="changes.html" title="Changes"
+             >previous</a> |</li>
+        <li><a href="index.html">asq v1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Robert Smallshire.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

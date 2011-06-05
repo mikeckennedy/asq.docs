@@ -6,13 +6,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Records and new() &mdash; asq v0.9 documentation</title>
+    <title>asq.record &mdash; asq v1.0 documentation</title>
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.9',
+        VERSION:     '1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -21,10 +21,10 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="asq v0.9 documentation" href="../index.html" />
+    <link rel="top" title="asq v1.0 documentation" href="../index.html" />
     <link rel="up" title="API Reference" href="reference.html" />
-    <link rel="next" title="Extension" href="extension.html" />
-    <link rel="prev" title="Predicates" href="predicates.html" /> 
+    <link rel="next" title="asq.extension" href="extension.html" />
+    <link rel="prev" title="asq.predicates" href="predicates.html" /> 
   </head>
   <body>
     <div class="related">
@@ -37,12 +37,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="extension.html" title="Extension"
+          <a href="extension.html" title="asq.extension"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="predicates.html" title="Predicates"
+          <a href="predicates.html" title="asq.predicates"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">asq v0.9 documentation</a> &raquo;</li>
+        <li><a href="../index.html">asq v1.0 documentation</a> &raquo;</li>
           <li><a href="reference.html" accesskey="U">API Reference</a> &raquo;</li> 
       </ul>
     </div>  
@@ -53,11 +53,14 @@
           <div class="body">
             
   <div class="section" id="module-asq.record">
-<span id="records-and-new"></span><h1>Records and <tt class="docutils literal"><span class="pre">new()</span></tt><a class="headerlink" href="#module-asq.record" title="Permalink to this headline">¶</a></h1>
+<span id="asq-record"></span><h1><tt class="docutils literal"><span class="pre">asq.record</span></tt><a class="headerlink" href="#module-asq.record" title="Permalink to this headline">¶</a></h1>
 <p>Records provide a convenient anonymous class which can be useful for
 managing intermediate query results. <tt class="docutils literal"><span class="pre">new()</span></tt> provides a concise way to
 create <tt class="docutils literal"><span class="pre">Records</span></tt> in the middle of a query.</p>
-<dl class="class">
+<div class="section" id="asq-record-record">
+<h2><tt class="docutils literal"><span class="pre">asq.record.Record</span></tt><a class="headerlink" href="#asq-record-record" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><dl class="class">
 <dt id="asq.record.Record">
 <em class="property">class </em><tt class="descclassname">asq.record.</tt><tt class="descname">Record</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#asq.record.Record" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class to which any attribute can be added at construction.</p>
@@ -86,18 +89,6 @@ value.</td>
 </dd></dl>
 
 <dl class="method">
-<dt id="asq.record.Record.__getstate__">
-<tt class="descname">__getstate__</tt><big>(</big><big>)</big><a class="headerlink" href="#asq.record.Record.__getstate__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Support for pickling.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="asq.record.Record.__setstate__">
-<tt class="descname">__setstate__</tt><big>(</big><big>)</big><a class="headerlink" href="#asq.record.Record.__setstate__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Support for unpickling.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="asq.record.Record.__str__">
 <tt class="descname">__str__</tt><big>(</big><big>)</big><a class="headerlink" href="#asq.record.Record.__str__" title="Permalink to this definition">¶</a></dt>
 <dd><p>A string representation of the Record.</p>
@@ -105,7 +96,12 @@ value.</td>
 
 </dd></dl>
 
-<dl class="function">
+</div></blockquote>
+</div>
+<div class="section" id="asq-record-new">
+<h2><tt class="docutils literal"><span class="pre">asq.record.new</span></tt><a class="headerlink" href="#asq-record-new" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><dl class="function">
 <dt id="asq.record.new">
 <tt class="descclassname">asq.record.</tt><tt class="descname">new</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#asq.record.new" title="Permalink to this definition">¶</a></dt>
 <dd><p>A convenience factory for creating Records.</p>
@@ -137,6 +133,8 @@ value.</td>
 </div>
 </dd></dl>
 
+</div></blockquote>
+</div>
 </div>
 
 
@@ -148,12 +146,21 @@ value.</td>
             <p class="logo"><a href="../index.html">
               <img class="logo" src="../_static/asq_logo_150.png" alt="Logo"/>
             </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">asq.record</span></tt></a><ul>
+<li><a class="reference internal" href="#asq-record-record"><tt class="docutils literal"><span class="pre">asq.record.Record</span></tt></a></li>
+<li><a class="reference internal" href="#asq-record-new"><tt class="docutils literal"><span class="pre">asq.record.new</span></tt></a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="predicates.html"
-                        title="previous chapter">Predicates</a></p>
+                        title="previous chapter"><tt class="docutils literal docutils literal"><span class="pre">asq.predicates</span></tt></a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="extension.html"
-                        title="next chapter">Extension</a></p>
+                        title="next chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">asq.extension</span></tt></a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/reference/record.txt"
@@ -186,12 +193,12 @@ value.</td>
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="extension.html" title="Extension"
+          <a href="extension.html" title="asq.extension"
              >next</a> |</li>
         <li class="right" >
-          <a href="predicates.html" title="Predicates"
+          <a href="predicates.html" title="asq.predicates"
              >previous</a> |</li>
-        <li><a href="../index.html">asq v0.9 documentation</a> &raquo;</li>
+        <li><a href="../index.html">asq v1.0 documentation</a> &raquo;</li>
           <li><a href="reference.html" >API Reference</a> &raquo;</li> 
       </ul>
     </div>

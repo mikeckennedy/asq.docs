@@ -1,10 +1,10 @@
-Queryables
-==========
+``asq.queryables``
+==================
 
 .. automodule:: asq.queryables
 
-Queryable
----------
+``asq.queryables.Queryable``
+----------------------------
 
    .. autoclass:: Queryable
 
@@ -15,10 +15,12 @@ Queryable
 
          Queryable.__contains__
          Queryable.__enter__
+         Queryable.__eq__
          Queryable.__exit__
          Queryable.__getitem__
          Queryable.__init__
          Queryable.__iter__
+         Queryable.__ne__
          Queryable.__reversed__
          Queryable.__repr__
          Queryable.__str__
@@ -90,6 +92,21 @@ Queryable
 
       .. automethod:: __enter__()
 
+      .. automethod:: __eq__(rjs)
+
+         .. note::
+
+           This in the infix operator equivalent of the sequence_equal()
+           query operator.
+
+         .. rubric:: Examples
+
+         Test whether a sequence is equal to a list::
+
+           >>> expected = [2, 4, 8, 16, 32]
+           >>> range(1, 5).select(lambda x: x ** 2) == expected
+           True
+
       .. automethod:: __exit__(type, value, traceback)
 
       .. automethod:: __getitem__(index)
@@ -127,7 +144,7 @@ Queryable
 
            This method should not usually be called directly; use the
            ``iter()`` built-in or other Python constructs which check for the
-           presence of ``__iter__()``, such as ``for`` loops::
+           presence of ``__iter__()``, such as ``for`` loops.
 
         .. rubric:: Examples
 
@@ -157,6 +174,16 @@ Queryable
           9
           4
 
+      .. automethod:: __ne__(rjs)
+
+         .. rubric:: Examples
+
+         Test whether a sequence is not equal to a list::
+
+           >>> expected = [1, 2, 3]
+           >>> range(1, 5).select(lambda x: x ** 2) != expected
+           True
+
       .. automethod:: __reversed__()
 
          .. note::
@@ -167,8 +194,8 @@ Queryable
          .. note::
 
             This method should not usually be called directly; use the
-            ``reversed()` built-in or other Python constructs which check for
-            the presence of __reversed__().
+            ``reversed()`` built-in or other Python constructs which check for
+            the presence of ``__reversed__()``.
 
          .. rubric:: Example
 
@@ -1330,9 +1357,9 @@ Queryable
 
          Convert a sequence of characters into a string::
 
-         >>> chars = ['c', 'h', 'a', 'r', 'a', 'c', 't', 'e', 'r', 's']
-         >>> query(chars).to_str()
-         'characters'
+           >>> chars = ['c', 'h', 'a', 'r', 'a', 'c', 't', 'e', 'r', 's']
+           >>> query(chars).to_str()
+           'characters'
 
          Concatenate some word fragments into a single string::
 
@@ -1413,8 +1440,8 @@ Queryable
            >>> query(a).zip(b, lambda x, y: x * y).to_list()
            [6, 28, 12, 36, 6, 45, 9]
 
-OrderedQueryable
-----------------
+``asq.queryables.OrderedQueryable``
+-----------------------------------
 
    .. autoclass:: OrderedQueryable
 
@@ -1425,8 +1452,8 @@ OrderedQueryable
 
       TODO: Document OrderedQueryable
 
-Lookup
-------
+``asq.queryables.Lookup``
+-------------------------
 
    .. autoclass:: Lookup
 
@@ -1435,10 +1462,137 @@ Lookup
 
          .. currentmodule asq.queryable
 
-      TODO: Document Lookup
+      .. rubric:: Example
 
-Grouping
---------
+      Lookup, being a subclass of Queryable supports all of the ``asq`` query
+      operators over a collection of Groupings. For example, to select only
+      those groups containing two or more elements and then flatten those
+      groups into a single list, use::
+
+         >>> key_value_pairs = [('tree', 'oak'),
+         ...                    ('bird', 'eagle'),
+         ...                    ('bird', 'swallow'),
+         ...                    ('tree', 'birch'),
+         ...                    ('mammal', 'mouse'),
+         ...                    ('tree', 'poplar')]
+         ...
+         >>> lookup = Lookup(key_value_pairs)
+         >>> lookup.where(lambda group: len(group) >= 2).select_many().to_list()
+        ['oak', 'birch', 'poplar', 'eagle', 'swallow']
+
+      .. automethod:: __init__(key_value_pairs)
+
+         .. rubric:: Example
+
+         To construct a Lookup from key value pairs::
+
+           >>> key_value_pairs = [('tree', 'oak'),
+           ...                    ('bird', 'eagle'),
+           ...                    ('bird', 'swallow'),
+           ...                    ('tree', 'birch'),
+           ...                    ('mammal', 'mouse'),
+           ...                    ('tree', 'poplar')]
+           ...
+           >>> lookup = Lookup(key_value_pairs)
+
+       .. automethod:: __getitem__(key)
+
+          .. rubric:: Examples
+
+          To retrieve a Grouping for a given key::
+
+            >>> key_value_pairs = [('tree', 'oak'),
+            ...                    ('bird', 'eagle'),
+            ...                    ('bird', 'swallow'),
+            ...                    ('tree', 'birch'),
+            ...                    ('mammal', 'mouse'),
+            ...                    ('tree', 'poplar')]
+            ...
+            >>> lookup = Lookup(key_value_pairs)
+            >>> lookup['tree']
+            Grouping(key='tree')
+
+          but if no such key exists a Grouping will still be returned, albeit an
+          empty one::
+
+            >>> vehicles = lookup['vehicle']
+            >>> vehicles
+            Grouping(key='vehicle')
+            >>> len(vehicles)
+            0
+
+       .. automethod:: __len__()
+
+          .. rubric:: Example
+
+          To determine the number of Groupings in a Lookup::
+
+            >>> key_value_pairs = [('tree', 'oak'),
+            ...                    ('bird', 'eagle'),
+            ...                    ('bird', 'swallow'),
+            ...                    ('tree', 'birch'),
+            ...                    ('mammal', 'mouse'),
+            ...                    ('tree', 'poplar')]
+            >>> lookup = Lookup(key_value_pairs)
+            >>> len(lookup)
+            3
+
+       .. automethod:: __contains__()
+
+          .. rubric:: Example
+
+          To determine whether a Lookup contains a specific Grouping::
+
+            >>> key_value_pairs = [('tree', 'oak'),
+            ...                    ('bird', 'eagle'),
+            ...                    ('bird', 'swallow'),
+            ...                    ('tree', 'birch'),
+            ...                    ('mammal', 'mouse'),
+            ...                    ('tree', 'poplar')]
+            >>> lookup = Lookup(key_value_pairs)
+            >>> 'tree' in lookup
+            True
+            >>> 'vehicle' in lookup
+            False
+
+       .. automethod:: __repr__()
+
+          .. rubric:: Example
+
+          To produce a string representation of a Lookup::
+
+            >>> key_value_pairs = [('tree', 'oak'),
+            ...                    ('bird', 'eagle'),
+            ...                    ('bird', 'swallow'),
+            ...                    ('tree', 'birch'),
+            ...                    ('mammal', 'mouse'),
+            ...                    ('tree', 'poplar')]
+            ...
+            >>> lookup = Lookup(key_value_pairs)
+            >>> repr(lookup)
+            "Lookup([('tree', 'oak'), ('tree', 'birch'), ('tree', 'poplar'),
+            ('bird', 'eagle'), ('bird', 'swallow'), ('mammal', 'mouse')])"
+
+       .. automethod:: apply_result_selector(selector)
+
+          .. rubric:: Example
+
+          Convert each group to a set using a lambda selector and put the
+          resulting sets in a list::
+
+            >>> key_value_pairs = [('tree', 'oak'),
+            ...                    ('bird', 'eagle'),
+            ...                    ('bird', 'swallow'),
+            ...                    ('tree', 'birch'),
+            ...                    ('mammal', 'mouse'),
+            ...
+            >>> lookup = Lookup(key_value_pairs)
+            >>> lookup.apply_result_selector(lambda key, group: set(group)).to_list()
+            [set(['poplar', 'oak', 'birch']), set(['eagle', 'swallow']),
+            set(['mouse'])]
+
+``asq.queryables.Grouping``
+---------------------------
 
    .. autoclass:: Grouping
 
@@ -1447,5 +1601,74 @@ Grouping
 
          .. currentmodule asq.queryable
 
-      TODO: Grouping
-      
+      .. rubric:: Example
+
+      Grouping, being a subclass of Queryable, supports all of the ``asq``
+      query operators. For example, to produce a list of the group items in
+      upper case::
+
+        >>> g = Grouping("fruit", ["pear", "apple", "orange", "banana"])
+        >>> g.select(str.upper).to_list()
+        ['PEAR', 'APPLE', 'ORANGE', 'BANANA']
+
+      .. automethod:: __init__(key, iterable)
+
+         .. rubric:: Example
+
+         Construct a Grouping from a list::
+
+           >>> Grouping("fruit", ["pear", "apple", "orange", "banana"])
+           Grouping(key='fruit')
+
+      .. autoattribute:: key
+
+         .. rubric:: Example
+
+         To retrieve the key from a Grouping::
+
+           >>> g = Grouping("fruit", ["pear", "apple", "orange", "banana"])
+           >>> g.key
+           'fruit'
+
+      .. automethod:: __len__()
+
+         .. rubric:: Example
+
+         To retrieve the number of items in a Grouping::
+
+           >>> g = Grouping("fruit", ["pear", "apple", "orange", "banana"])
+           >>> len(g)
+           4
+
+      .. automethod:: __eq__()
+
+         .. rubric:: Example
+
+         To test whether two Groupings are equal in value::
+
+           >>> g1 = Grouping("fruit", ["pear", "apple", "orange", "banana"])
+           >>> g2 = Grouping("fruit", ["pear", "apple", "orange", "banana"])
+           >>> g1 == g2
+           True
+
+      .. automethod:: __ne__()
+
+         .. rubric:: Example
+
+         To test whether two Groupings are inequal in value::
+
+           >>> g1 = Grouping("fruit", ["pear", "apple", "orange", "banana"])
+           >>> g2 = Grouping("fruit", ["cherry", "apple", "orange", "banana"])
+           >>> g1 != g2
+           True
+
+      .. automethod:: __repr__()
+
+         .. rubric:: Example
+
+         To create a string representation of the Grouping::
+
+           >>> g = Grouping("fruit", ["pear", "apple", "orange", "banana"])
+           >>> repr(g)
+           Grouping(key="fruit", items=["pear", "apple", "orange", "banana"])
+
