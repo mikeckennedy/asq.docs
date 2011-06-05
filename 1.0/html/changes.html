@@ -52,7 +52,22 @@
             
   <div class="section" id="changes">
 <h1>Changes<a class="headerlink" href="#changes" title="Permalink to this headline">¶</a></h1>
-<p>This is a list of changes</p>
+<div class="section" id="asq-1-0">
+<h2>asq 1.0<a class="headerlink" href="#asq-1-0" title="Permalink to this headline">¶</a></h2>
+<p>Huge correctness and completeness changes for 1.0 since 0.9.  The API now has
+feature equivalence with LINQ for objects with 100% test coverage and complete
+documentation.</p>
+<p>The API has been very much reorganised with some renaming of crucial functions.
+The important asq() function is now called query() to prevent a clash with the
+package name itself and is found in the asq.initiators package.</p>
+<p>For common asq usage you now need to do:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">asq.initiators</span> <span class="kn">import</span> <span class="n">query</span>
+<span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">query</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>to get started.  For more than that, consult the documentation.</p>
+</div>
 </div>
 
 
@@ -64,6 +79,14 @@
             <p class="logo"><a href="index.html">
               <img class="logo" src="_static/asq_logo_150.png" alt="Logo"/>
             </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Changes</a><ul>
+<li><a class="reference internal" href="#asq-1-0">asq 1.0</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="faq.html"
                         title="previous chapter">Frequently Asked Questions</a></p>
